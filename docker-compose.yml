@@ -1,0 +1,30 @@
+version: '3.4'
+
+volumes:
+  dbdata: {}
+  appui: {}
+
+services:
+  mysql:
+    image: mysql:8.0.21
+    container_name: mysql
+    volumes:
+      - dbdata:/var/lib/mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=toor
+      - MYSQL_DATABASE=blog
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=toor
+    ports:
+      - "3306:3306"
+  blog.api:
+    links:
+      - mysql
+    image: ${DOCKER_REGISTRY-}blogapi
+    restart: always
+    build:
+      context: .
+      dockerfile: KKotBlogApi/Dockerfile
+    depends_on:
+      - mysql

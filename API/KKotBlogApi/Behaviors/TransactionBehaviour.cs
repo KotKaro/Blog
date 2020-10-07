@@ -1,0 +1,34 @@
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Blog.Domain.DataAccess;
+using MediatR;
+
+
+namespace Blog.API.Behaviors
+{
+    public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    {
+        private readonly IUnitOfWork _unitOfWork;
+
+        public TransactionBehaviour(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
+        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        {
+            if (_unitOfWork.HasActiveTransaction)
+            {
+                return await next();
+            }
+
+            using (var transaction = await _unitOfWork.BeginTransactionAsync())
+            {
+                var response = await next();
+                await _unitOfWork.CommitTransactionAsync(transaction);
+
+                return response;
+            }
+        }
+    }
+}
