@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Blog.Auth.Models;
+using Blog.Auth.Abstractions;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Blog.Auth
 {
-    public class JwtService
+    public class JwtService : IJwtService
     {
-        private readonly JwtContainerModel _authContainer;
+        private readonly IAuthContainerModel _authContainer;
         private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
 
-        public JwtService(JwtContainerModel authContainer)
+        public JwtService(IAuthContainerModel authContainer)
         {
             _authContainer = authContainer;
             _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();

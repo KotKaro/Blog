@@ -29,7 +29,7 @@ namespace Blog.IntegrationTests.Common
         [OneTimeTearDown]
         public async Task OneTimeTearDown()
         {
-            await _containerStarter.DockerContainerStarter.PruneContainers();
+            //await _containerStarter.DockerContainerStarter.PruneContainers();
         }
     }
 }

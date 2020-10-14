@@ -1,0 +1,9 @@
+{
+    "/api/*": {
+        "target": "http://blog-api/",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug",
+        "pathRewrite": { "^/api": "" }
+    }
+}

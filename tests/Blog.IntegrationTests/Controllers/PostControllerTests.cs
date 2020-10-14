@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using Blog.API.Controllers;
+using Blog.Domain.Exceptions;
 using Blog.Domain.Models.Aggregates.Post;
 using Blog.IntegrationTests.Common;
 using Blog.Tests.Common;
@@ -24,7 +26,7 @@ namespace Blog.IntegrationTests.Controllers
         {
             //Arrange
             var mediator = Container.Resolve<IMediator>();
-            var controller = new PostController(mediator);
+            var controller = new PostsController(mediator);
 
             BlogContext.Set<Post>().AddRange
             (
@@ -45,7 +47,7 @@ namespace Blog.IntegrationTests.Controllers
         {
             //Arrange
             var mediator = Container.Resolve<IMediator>();
-            var controller = new PostController(mediator);
+            var controller = new PostsController(mediator);
 
             BlogContext.Set<Post>().AddRange
             (
@@ -71,14 +73,13 @@ namespace Blog.IntegrationTests.Controllers
         {
             //Arrange
             var mediator = Container.Resolve<IMediator>();
-            var controller = new PostController(mediator);
+            var controller = new PostsController(mediator);
 
             //Act
             var result = await controller.Create(MockFactory.CreateCreatePostCommand());
 
             //Assert
-            var value = result.Value;
-            Assert.That(value, Is.Not.Null);
+            Assert.That(result, Is.Not.Null);
         }
 
         [Test]
@@ -86,7 +87,7 @@ namespace Blog.IntegrationTests.Controllers
         {
             //Arrange
             var mediator = Container.Resolve<IMediator>();
-            var controller = new PostController(mediator);
+            var controller = new PostsController(mediator);
 
             var post = MockFactory.CreatePost();
             BlogContext.Set<Post>().Add(post);
@@ -98,6 +99,81 @@ namespace Blog.IntegrationTests.Controllers
             //Assert
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Id, Is.EqualTo(post.Id));
+        }
+
+        [Test]
+        public async Task When_UpdateCalledAndPostDoesNotExists_Expect_RecordNotFoundExceptionThrown()
+        {
+            //Arrange
+            var mediator = Container.Resolve<IMediator>();
+            var controller = new PostsController(mediator);
+
+            Assert.ThrowsAsync<RecordNotFoundException>(async () =>
+            {
+                await controller.Update(MockFactory.CreateUpdatePostCommand(Guid.NewGuid()));
+            });
+        }
+
+        [Test]
+        public async Task When_UpdateCalledAndPostExists_Expect_PostToBeUpdated()
+        {
+            //Arrange
+            var mediator = Container.Resolve<IMediator>();
+            var controller = new PostsController(mediator);
+
+            var post = MockFactory.CreatePost();
+            await BlogContext.Set<Post>().AddAsync(post);
+            await BlogContext.SaveChangesAsync();
+
+            //Act
+            await controller.Update(MockFactory.CreateUpdatePostCommand(post.Id, "updatedTitle", "updatedContent"));
+
+            //Assert
+            var updated = await controller.GetById(post.Id);
+            Assert.That(updated.Title, Is.EqualTo("updatedTitle"));
+            Assert.That(updated.Content, Is.EqualTo("updatedContent"));
+        }
+
+        [Test]
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase(" ")]
+        public async Task When_UpdateCalledAndPostTitleNotProvided_Expect_ArgumentExceptionToBeThrown(string title)
+        {
+            //Arrange
+            var mediator = Container.Resolve<IMediator>();
+            var controller = new PostsController(mediator);
+
+            var post = MockFactory.CreatePost();
+            await BlogContext.Set<Post>().AddAsync(post);
+            await BlogContext.SaveChangesAsync();
+
+            //Act + Assert
+            Assert.ThrowsAsync<ArgumentException>(async () =>
+            {
+                await controller.Update(MockFactory.CreateUpdatePostCommand(post.Id, title, "updatedContent"));
+            });
+        }
+
+        [Test]
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase(" ")]
+        public async Task When_UpdateCalledAndPostContentNotProvided_Expect_ArgumentExceptionToBeThrown(string content)
+        {
+            //Arrange
+            var mediator = Container.Resolve<IMediator>();
+            var controller = new PostsController(mediator);
+
+            var post = MockFactory.CreatePost();
+            await BlogContext.Set<Post>().AddAsync(post);
+            await BlogContext.SaveChangesAsync();
+
+            //Act + Assert
+            Assert.ThrowsAsync<ArgumentException>(async () =>
+            {
+                await controller.Update(MockFactory.CreateUpdatePostCommand(post.Id, "title", content));
+            });
         }
     }
 }

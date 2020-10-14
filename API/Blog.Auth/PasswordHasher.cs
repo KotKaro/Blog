@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Cryptography;
+using Blog.Auth.Abstractions;
 using Microsoft.Extensions.Options;
 
 namespace Blog.Auth
 {
-    public sealed class PasswordHasher
+    public sealed class PasswordHasher : IPasswordHasher
     {
         private const int SaltSize = 16; // 128 bit 
         private const int KeySize = 32; // 256 bit

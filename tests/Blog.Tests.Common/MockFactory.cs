@@ -1,8 +1,10 @@
 ﻿using System;
 using Blog.Application.Commands.CreatePost;
-using Blog.Application.Commands.GetPostById;
+using Blog.Application.Commands.UpdatePost;
+using Blog.Application.Queries.GetPostById;
 using Blog.Application.Queries.GetPosts;
 using Blog.Domain.Models.Aggregates.Post;
+using Blog.Domain.Models.Aggregates.User;
 
 namespace Blog.Tests.Common
 {
@@ -44,11 +46,31 @@ namespace Blog.Tests.Common
             };
         }
 
-        public static GetPostByIdCommand CreateGetByIdCommand(Guid? id = null)
+        public static GetPostByIdQuery CreateGetByIdQuery(Guid? id = null)
         {
-            return new GetPostByIdCommand
+            return new GetPostByIdQuery
             {
                 Id = id ?? Guid.NewGuid()
+            };
+        }
+
+        public static User CreateUser(UserDetails userDetails = null)
+        {
+            return new User(userDetails ?? CreateUserDetails());
+        }
+
+        private static UserDetails CreateUserDetails(string username = "test", string password = "test")
+        {
+            return new UserDetails(username, password);
+        }
+
+        public static UpdatePostCommand CreateUpdatePostCommand(Guid? postId = null, string title = "title", string content = "content")
+        {
+            return new UpdatePostCommand
+            {
+                Id = postId ?? Guid.NewGuid(),
+                Title = title,
+                Content = content,
             };
         }
     }

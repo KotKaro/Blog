@@ -1,11 +1,10 @@
-version: '3.4'
+version: '3.7'
 
 volumes:
   dbdata: {}
-  appui: {}
-
+  
 services:
-  mysql:
+  blog-db:
     image: mysql:8.0.21
     container_name: mysql
     volumes:
@@ -16,15 +15,37 @@ services:
       - MYSQL_DATABASE=blog
       - MYSQL_USER=root
       - MYSQL_PASSWORD=toor
+    networks:
+      - backend-net
+  blog-api:
     ports:
-      - "3306:3306"
-  blog.api:
-    links:
-      - mysql
+      - "80"
+      - "443"
+    networks:
+      - backend-net
     image: ${DOCKER_REGISTRY-}blogapi
     restart: always
     build:
       context: .
-      dockerfile: KKotBlogApi/Dockerfile
+      dockerfile: ./API/Blog.API/Dockerfile
     depends_on:
-      - mysql
+      - blog-db
+  blog-spa:
+    build:
+      context: ./WEB/Blog.WEB/
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "4200:4200"
+      - "49153:49153"
+    volumes:
+        - "/app/node_modules"
+        - "./WEB/Blog.WEB/:/app"
+    networks:
+      - backend-net
+    depends_on: 
+      - blog-api
+
+networks:
+  backend-net:
+    driver: bridge

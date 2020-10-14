@@ -1,8 +1,8 @@
 using System;
 using System.Threading;
-using Blog.Application.Commands.CreatePost;
 using NUnit.Framework;
 using System.Threading.Tasks;
+using Blog.Application.Commands.UpdatePost;
 using Blog.Domain.Models.Aggregates.Post;
 using Blog.Domain.Repositories;
 using Moq;

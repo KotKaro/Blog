@@ -1,32 +1,34 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Blog.Domain.Exceptions;
 using Blog.Domain.Models.Aggregates.Post;
 using Blog.Domain.Repositories;
 using MediatR;
 
 namespace Blog.Application.Commands.CreatePost
 {
-    public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Unit>
+    public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, Unit>
     {
         private readonly IPostRepository _repository;
 
-        public CreatePostCommandHandler(IPostRepository repository)
+        public UpdatePostCommandHandler(IPostRepository repository)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public async Task<Unit> Handle(CreatePostCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdatePostCommand request, CancellationToken cancellationToken)
         {
-            await _repository.AddAsync(
-            new Post
-                (
-                    request.Id,
-                    new Title(request.Title),
-                    new Content(request.Content)
-                )
-            );
+            var post = await _repository.GetByIdAsync(request.Id);
 
+            if (post == null)
+            {
+                throw new RecordNotFoundException(typeof(Post), request.Id);
+            }
+
+            post.UpdateContent(new Content(request.Content));
+            post.UpdateTitle(new Title(request.Title));
+            
             return Unit.Value;
         }
     }

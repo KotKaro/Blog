@@ -1,0 +1,7 @@
+<form [formGroup]="postForm">
+    <label>Title:</label>
+    <input formControlName="title" class="form-control" placeholder="Please enter a title">
+
+    <label style="margin-top: 10px;">Content:</label>
+    <angular-editor formControlName="content" [config]="editorConfig"></angular-editor>
+</form>

@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\API\KKotBlogApi\Blog.API.csproj" />
+    <ProjectReference Include="..\..\API\Blog.API\Blog.API.csproj" />
     <ProjectReference Include="..\Blog.Tests.Common\Blog.Tests.Common.csproj" />
   </ItemGroup>
 

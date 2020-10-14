@@ -8,14 +8,22 @@ namespace Blog.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<Post> builder)
         {
+            builder.ToTable($"{nameof(Post)}s");
+            builder.Property(x => x.Id)
+                .HasColumnName(nameof(Post.Id));
+
             builder.OwnsOne(x => x.Content, content =>
             {
-                content.Property(x => x.Value).IsRequired();
+                content.Property(y => y.Value)
+                    .HasColumnName(nameof(Post.Content))
+                    .IsRequired();
             });
 
             builder.OwnsOne(x => x.Title, title =>
             {
-                title.Property(x => x.Value).IsRequired();
+                title.Property(y => y.Value)
+                    .HasColumnName(nameof(Post.Title))
+                    .IsRequired();
             });
         }
     }

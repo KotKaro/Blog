@@ -1,8 +1,8 @@
 using System;
 using System.Threading;
-using Blog.Application.Commands.GetPostById;
 using NUnit.Framework;
 using System.Threading.Tasks;
+using Blog.Application.Queries.GetPostById;
 using Blog.Domain.Exceptions;
 using Blog.Domain.Repositories;
 using Blog.Tests.Common;
@@ -28,7 +28,7 @@ namespace Blog.Application.UnitTests.Commands.GetPostById
             Assert.Throws<ArgumentNullException>(() =>
             {
                 // ReSharper disable once ObjectCreationAsStatement
-                new GetPostByIdCommandHandler(null, Mapper.GetInstance());
+                new GetPostByIdQueryHandler(null, Mapper.GetInstance());
             });
         }
 
@@ -38,7 +38,7 @@ namespace Blog.Application.UnitTests.Commands.GetPostById
             Assert.Throws<ArgumentNullException>(() =>
             {
                 // ReSharper disable once ObjectCreationAsStatement
-                new GetPostByIdCommandHandler(_postRepositoryMock.Object, null);
+                new GetPostByIdQueryHandler(_postRepositoryMock.Object, null);
             });
         }
 
@@ -46,12 +46,12 @@ namespace Blog.Application.UnitTests.Commands.GetPostById
         public void When_PostWithSpecificIdDoesNotExistsInRepository_Expect_RecordNotFoundExceptionThrown()
         {
             // Arrange
-            var handler = new GetPostByIdCommandHandler(_postRepositoryMock.Object, Mapper.GetInstance());
+            var handler = new GetPostByIdQueryHandler(_postRepositoryMock.Object, Mapper.GetInstance());
 
             // Act + Assert
             Assert.ThrowsAsync<RecordNotFoundException>(async () =>
             {
-                await handler.Handle(MockFactory.CreateGetByIdCommand(), CancellationToken.None);
+                await handler.Handle(MockFactory.CreateGetByIdQuery(), CancellationToken.None);
             });
         }
 
@@ -62,10 +62,10 @@ namespace Blog.Application.UnitTests.Commands.GetPostById
             var id = Guid.NewGuid();
             _postRepositoryMock.Setup(x => x.GetByIdAsync(id))
                 .Returns(Task.FromResult(MockFactory.CreatePost(id)));
-            var handler = new GetPostByIdCommandHandler(_postRepositoryMock.Object, Mapper.GetInstance());
+            var handler = new GetPostByIdQueryHandler(_postRepositoryMock.Object, Mapper.GetInstance());
 
             // Act + Assert
-            var result = await handler.Handle(MockFactory.CreateGetByIdCommand(id), CancellationToken.None);
+            var result = await handler.Handle(MockFactory.CreateGetByIdQuery(id), CancellationToken.None);
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Id, Is.EqualTo(id));
