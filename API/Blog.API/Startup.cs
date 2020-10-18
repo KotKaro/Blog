@@ -62,9 +62,7 @@ namespace Blog.API
                     c.RoutePrefix = string.Empty;
                 });
             }
-
             app.UseHttpsRedirection();
-
             app.UseCors(CorsPolicyName);
 
             app.UseRouting();

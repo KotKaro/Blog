@@ -1,4 +1,45 @@
+@font-face {
+    font-family: blogFont;
+    src: url(https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&amp;subset=devanagari,latin-ext);
+}
+
+*:not(.btn) {
+    color: #3c4258;
+    font-family: blogFont, sans-serif;
+}
+
 .container {
     height: 100%;
     width: 100%;
+}
+
+.separator {
+    height: 65px;
+}
+
+app-nav-bar {
+    height: 50px;
+}
+
+.header-style {
+    text-align: center;
+}
+
+.image-style {
+    width: 150px;
+    margin-top: -35px;
+}
+
+.cornflowerblue-text {
+    color: cornflowerblue;
+}
+
+.light-grey-text {
+    color: #999fb3;
+    padding-bottom: 20px;
+    font-weight: 100;
+}
+
+.text-centered {
+    text-align: center;
 }

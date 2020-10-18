@@ -1,0 +1,30 @@
+@import "../about-me.component.scss";
+*:not(.section-heading, .text-center) {
+    font-size: 16px;
+}
+
+* {
+    text-transform: uppercase;
+}
+
+.single-progress-txt {
+    display: flex;
+}
+
+.progress-wrapper {
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.progress {
+    border-radius: 3px;
+    background: cornflowerblue;
+    height: 10px;
+    width: 85%;
+    margin-right: 20px;
+}
+
+.progress-bar {
+    background: palegreen;
+    border-radius: 3px;
+}

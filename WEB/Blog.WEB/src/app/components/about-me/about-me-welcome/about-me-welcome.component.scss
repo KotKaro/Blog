@@ -1,0 +1,44 @@
+* {
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.welcome-hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url(../../../../assets/images/welcome-banner.jpg)no-repeat;
+    left: 0;
+    height: 800px;
+}
+
+.space-placeholder {
+    height: 820px;
+}
+
+.welcome-hero:before {
+    content: " ";
+    background: rgba(31, 44, 108, .65);
+    height: 100%;
+}
+
+.welcome-hero,
+.welcome-hero:before {
+    position: absolute;
+    width: 100%;
+}
+
+.header-text h2 {
+    font-size: 54px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.header-text h2 span {
+    color: cornflowerblue;
+}
+
+.header-text p {
+    font-size: 20px;
+}

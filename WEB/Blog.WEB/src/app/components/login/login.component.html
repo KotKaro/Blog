@@ -1,8 +1,8 @@
 <h2 style="text-align: center;">Login</h2>
 <hr>
 <div class="row">
-    <div class="col col-4 col-md-4 col-sm-4"></div>
-    <div class="col col-4 col-md-4 col-sm-4">
+    <div class="col-md-4 col-sm-4"></div>
+    <div class="col-md-4 col-sm-4">
         <form autocomplete="off" #loginForm="ngForm" (ngSubmit)="login(loginForm.value)">
             <div class="form-group">
                 <div class="row">
@@ -29,5 +29,5 @@
         <br>
         <div *ngIf="loginInvalid" class="alert alert-danger">Invalid login info</div>
     </div>
-    <div class="col col-4 col-md-4 col-sm-4"></div>
+    <div class="col-md-4 col-sm-4"></div>
 </div>

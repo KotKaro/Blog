@@ -1,10 +1,11 @@
-<nav class="navbar navbar-dark primary-color">
-    <span>
-        <a [routerLink]="['/' + getCorrectRoute()]">Karol Kot</a>
-    </span>
-    <span class="float-right">
-        <a [routerLink]="['/blog']">Blog</a>
-        <a class="margin-left" [routerLink]="['/about-me']">About me</a>
-    </span>
+<nav class="navbar navbar-expand-md fixed-top d-md-block">
+    <div class="container">
+        <span class="navbar-brand">
+            <a [routerLink]=" [ '/' + getCorrectRoute()] ">Karol</a>
+        </span>
+        <span class="float-right ">
+            <a [routerLink]="[ '/blog']" class="link">Blog</a>
+            <a [routerLink]="[ '/about-me']" class="link">About me</a>
+        </span>
+    </div>
 </nav>
-<hr/>

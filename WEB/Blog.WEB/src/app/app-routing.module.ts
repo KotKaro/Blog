@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthenticatedActivator } from './activators/authenticated.activator';
 import { AboutMeComponent } from './components/about-me/about-me.component';
-import { BlogComponent } from './components/blog/blog.component';
 import { LoginComponent } from './components/login/login.component';
 import { ManagementPanelComponent } from './components/managment-panel/management-panel.component';
 import { PostCreateComponent } from './components/post-create/post-create.component';
 import { PostDetailsComponent } from './components/post-details/post-details.component';
 import { PostEditComponent } from './components/post-edit/post-edit.component';
+import { PostListComponent } from './components/post-list/post-list.component';
+import { PostListResolver } from './resolvers/post-list.resolver';
 import { PostResolver } from './resolvers/post.resolver';
 
 const routes: Routes = [
@@ -16,19 +18,24 @@ const routes: Routes = [
   },
   {
     path: 'blog',
-    component: BlogComponent
+    component: PostListComponent,
+    resolve: {
+      posts: PostListResolver
+    },
   },
   {
     //Create separate module for posts
     path: 'post-create',
-    component: PostCreateComponent
+    component: PostCreateComponent,
+    canActivate: [AuthenticatedActivator]
   },
   {
     path: 'post/edit/:id',
     component: PostEditComponent,
     resolve: {
       post: PostResolver
-    }
+    },
+    canActivate: [AuthenticatedActivator]
   },
   {
     path: 'post/:id',
@@ -39,7 +46,8 @@ const routes: Routes = [
   },
   {
     path: 'management',
-    component: ManagementPanelComponent
+    component: ManagementPanelComponent,
+    canActivate: [AuthenticatedActivator]
   },
   {
     path: 'login',

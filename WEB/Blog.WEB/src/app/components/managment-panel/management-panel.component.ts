@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { BlogRouterService } from 'src/app/services/blog-router.service';
 
 @Component({
   selector: 'app-management-panel',
@@ -9,16 +10,16 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 
 export class ManagementPanelComponent {
-  constructor(private router: Router, private authService: AuthService) {
+  constructor(private blogRouter: BlogRouterService, private authService: AuthService) {
 
   }
 
   navigateToPostCreate(): void {
-    this.router.navigate(['/post-create']);
+    this.blogRouter.goToPostCreate();
   }
 
   logout(): void {
     this.authService.logout();
-    this.router.navigate(['/blog']);
+    this.blogRouter.goToBlog();
   }
 }

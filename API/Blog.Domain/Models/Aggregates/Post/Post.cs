@@ -6,6 +6,7 @@ namespace Blog.Domain.Models.Aggregates.Post
     {
         public Title Title { get; private set; }
         public Content Content { get; private set; }
+        public CreationDate CreationDate { get; private set; }
 
         private Post() { }
 
@@ -13,6 +14,7 @@ namespace Blog.Domain.Models.Aggregates.Post
         {
             Title = title ?? throw new ArgumentNullException(nameof(title));
             Content = content ?? throw new ArgumentNullException(nameof(content));
+            CreationDate = new CreationDate();
         }
 
         public void UpdateContent(Content content)

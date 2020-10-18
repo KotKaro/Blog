@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Post } from 'src/app/models/post.model';
 import { AuthService } from 'src/app/services/auth.service';
+import { BlogRouterService } from 'src/app/services/blog-router.service';
+import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
+import { PostService } from 'src/app/services/post.service';
 
 @Component({
   selector: 'app-post-details',
@@ -9,14 +12,20 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./post-details.component.scss']
 })
 export class PostDetailsComponent {
-  post: Post = { content: '', title: '', id: '' };
+  post: Post = { content: '', title: '', id: '', creationDate: new Date() };
 
-  constructor(private route: ActivatedRoute, private router: Router, public authService: AuthService) {
+  constructor(
+    private route: ActivatedRoute,
+    private blogRouter: BlogRouterService,
+    public authService: AuthService,
+    private postService: PostService,
+    private confirmDialogService: ConfirmDialogService
+  ) {
     this.post = route.snapshot.data.post;
   }
 
   goToEdit(): void {
-    this.router.navigate(['/post/edit/' + this.getCurrentId()]);
+    this.blogRouter.goToEditPost(this.getCurrentId());
   }
 
   getCurrentId(): string {
@@ -25,5 +34,20 @@ export class PostDetailsComponent {
 
   isAuthenticated(): boolean {
     return this.authService.isAuthenticated();
+  }
+
+  showDialog(): void {
+    this.confirmDialogService.confirmThis("Are you sure to delete?",
+      () => {
+        this.removePost();
+      }, () => {
+      });
+  }
+
+  removePost(): void {
+    this.postService.remove(this.post.id)
+      .subscribe(() => {
+        this.blogRouter.goToBlog();
+      });
   }
 }

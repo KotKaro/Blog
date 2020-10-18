@@ -25,6 +25,13 @@ namespace Blog.Infrastructure.Configurations
                     .HasColumnName(nameof(Post.Title))
                     .IsRequired();
             });
+            builder.OwnsOne(x => x.CreationDate, creationDate =>
+            {
+                creationDate.Property(y => y.Value)
+                    .HasColumnName(nameof(Post.CreationDate))
+                    .IsRequired();
+            });
+
         }
     }
 }

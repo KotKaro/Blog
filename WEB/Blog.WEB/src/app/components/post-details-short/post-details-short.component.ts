@@ -6,7 +6,7 @@ import { Post } from 'src/app/models/post.model';
   templateUrl: './post-details-short.component.html',
   styleUrls: ['./post-details-short.component.scss']
 })
-export class PostDetailsShortComponent implements AfterViewInit {
+export class PostDetailsShortComponent {
   @Input() post: Post;
 
   showShowMoreButton: boolean;
@@ -14,8 +14,9 @@ export class PostDetailsShortComponent implements AfterViewInit {
   constructor(private element: ElementRef) {
 
   }
-  ngAfterViewInit(): void {
+
+  isShowMoreButtonVisible(): boolean {
     const elements = this.element.nativeElement.querySelectorAll('.post-details');
-    this.showShowMoreButton = elements[0].scrollHeight > 300;
+    return elements[0].scrollHeight > 300;
   }
 }

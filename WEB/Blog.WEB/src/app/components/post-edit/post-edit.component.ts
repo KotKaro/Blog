@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Post } from 'src/app/models/post.model';
+import { BlogRouterService } from 'src/app/services/blog-router.service';
 import { PostService } from 'src/app/services/post.service';
 
 @Component({
@@ -12,13 +13,13 @@ import { PostService } from 'src/app/services/post.service';
 export class PostEditComponent {
   post: Post;
 
-  constructor(private route: ActivatedRoute, private postService: PostService, private router: Router) {
+  constructor(private route: ActivatedRoute, private postService: PostService, private blogRouter: BlogRouterService) {
     this.post = route.snapshot.data.post;
   }
 
   update(): void {
     this.postService.update(this.post).subscribe(() => {
-      this.router.navigate([`/post/${this.post.id}`]);
+      this.blogRouter.goToPostDetails(this.post.id);
     });
   }
 

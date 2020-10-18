@@ -37,4 +37,15 @@ export abstract class EntityService<TEntity extends Entity> {
                 this.toastr.success('Updated');
             }));
     }
+
+    remove(id: string): Observable<Object> {
+        if (!id) {
+            return of(null);
+        }
+
+        return this.httpClient.delete(`/api/${this.endpoint}/${id}`)
+            .pipe(tap(() => {
+                this.toastr.success('Removed');
+            }));
+    }
 }

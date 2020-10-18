@@ -58,6 +58,23 @@ namespace Blog.Infrastructure.Migrations
                                 .HasForeignKey("PostId");
                         });
 
+                    b.OwnsOne("Blog.Domain.Models.Aggregates.Post.CreationDate", "CreationDate", b1 =>
+                        {
+                            b1.Property<Guid>("PostId")
+                                .HasColumnType("char(36)");
+
+                            b1.Property<DateTime>("Value")
+                                .HasColumnName("CreationDate")
+                                .HasColumnType("datetime(6)");
+
+                            b1.HasKey("PostId");
+
+                            b1.ToTable("Posts");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PostId");
+                        });
+
                     b.OwnsOne("Blog.Domain.Models.Aggregates.Post.Title", "Title", b1 =>
                         {
                             b1.Property<Guid>("PostId")

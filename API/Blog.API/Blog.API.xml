@@ -57,5 +57,12 @@
             <param name="request">Data of post to update</param>
             <returns>Information about completed action</returns>
         </member>
+        <member name="M:Blog.API.Controllers.PostsController.DeleteAsync(System.Guid)">
+            <summary>
+            Deletes post with specified ID
+            </summary>
+            <param name="id">ID of post to remove</param>
+            <returns>Information about completed action</returns>
+        </member>
     </members>
 </doc>

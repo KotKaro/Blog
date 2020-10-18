@@ -1,10 +1,23 @@
 nav {
-    padding-left: 0px;
-    padding-right: 0px;
-    margin-top: 10px;
-    overflow: auto;
+    background-color: #fff;
+    border-bottom: transparent;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, .2);
 }
 
-.margin-left {
-    margin-left: 20px;
+.navbar-brand {
+    color: cornflowerblue;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.link {
+    cursor: pointer;
+    color: #6f6f6f;
+    font-weight: 400;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.cornflowerblue-text {
+    color: cornflowerblue;
 }

@@ -1,0 +1,31 @@
+<div class="skill-content">
+    <div class="section-heading text-center">
+        <h2>skills</h2>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div *ngFor="let skill of getLeftSkills()">
+                    <span>{{skill.name}}</span>
+                    <div class="d-flex align-items-center progress-wrapper">
+                        <span class="progress">
+                            <span class="progress-bar" [ngStyle]="{'width': skill.level + '%'}"></span>
+                        </span>
+                        <span style="color: cornflowerblue; font-weight: 500;">{{skill.level}}%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div *ngFor="let skill of getRightSkills()">
+                    <span>{{skill.name}}</span>
+                    <div class="d-flex align-items-center progress-wrapper">
+                        <span class="progress">
+                            <span class="progress-bar" [ngStyle]="{'width': skill.level + '%'}"></span>
+                        </span>
+                        <span style="color: cornflowerblue; font-weight: 500;">{{skill.level}}%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

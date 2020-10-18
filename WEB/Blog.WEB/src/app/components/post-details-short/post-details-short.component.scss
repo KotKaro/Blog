@@ -1,9 +1,26 @@
+@import "../../app.component.scss";
 .post-details {
     border-radius: 10px;
-    padding: 10px;
     margin-top: 10px;
+}
+
+.text-centered {
+    text-align: center;
+    padding-bottom: 10px;
 }
 
 button {
     margin-top: 10px;
+}
+
+h3 {
+    cursor: pointer;
+    border-radius: 9px;
+    padding: 10px;
+}
+
+h3:hover {
+    color: white;
+    background-color: cornflowerblue;
+    transition: 0.5s;
 }

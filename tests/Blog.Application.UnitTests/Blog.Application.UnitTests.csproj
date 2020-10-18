@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\API\Blog.Auth\Blog.Auth.csproj" />
     <ProjectReference Include="..\Blog.Tests.Common\Blog.Tests.Common.csproj" />
   </ItemGroup>
 

@@ -1,0 +1,24 @@
+<div class="section-heading text-center">
+    <h2>experience</h2>
+</div>
+
+<div class="container">
+    <div *ngFor="let position of getPositions()">
+        <div class="row">
+            <div class="col-6 date-and-position">
+                <div>
+                    <span>{{position.peroid.from | date:'yyyy-LLL'}}</span>
+                    <span> - </span>
+                    <span>{{position.peroid.to | date:'yyyy-LLL'}}</span>
+                </div>
+                <div class="position uppercase-text">{{position.position}}</div>
+                <i class="fa fa-circle circle"></i>
+            </div>
+            <div class="col-6">
+                <div class="uppercase-text">{{position.companyName}}</div>
+                <div class="work-place">{{position.city}}, {{position.country}}</div>
+                <div class="description">{{position.description}}</div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -8,7 +8,6 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 
-COPY ["API/Blog.API/Blog.API.xml", "."]
 COPY ["API/Blog.API/Blog.API.csproj", "API/Blog.API/"]
 COPY ["API/Blog.Auth.Abstractions/Blog.Auth.Abstractions.csproj", "API/Blog.Auth.Abstractions/"]
 COPY ["API/Blog.Application/Blog.Application.csproj", "API/Blog.Application/"]

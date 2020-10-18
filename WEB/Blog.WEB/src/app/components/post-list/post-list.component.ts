@@ -1,23 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Post } from 'src/app/models/post.model';
-import { PostService } from 'src/app/services/post.service';
 
 @Component({
   selector: 'app-post-list',
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.scss']
 })
-export class PostListComponent implements OnInit {
+export class PostListComponent {
   posts: Post[];
 
-  constructor(private postService: PostService) {
-
-  }
-
-  ngOnInit(): void {
-    this.postService.getAll()
-      .subscribe(data => {
-        this.posts = data;
-      });
+  constructor(private route: ActivatedRoute) {
+    this.posts = route.snapshot.data.posts;
   }
 }

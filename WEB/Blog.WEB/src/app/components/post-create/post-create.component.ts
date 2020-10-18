@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Post } from 'src/app/models/post.model';
+import { BlogRouterService } from 'src/app/services/blog-router.service';
 import { PostService } from 'src/app/services/post.service';
 
 @Component({
@@ -11,15 +12,15 @@ import { PostService } from 'src/app/services/post.service';
   styleUrls: ['./post-create.component.scss']
 })
 export class PostCreateComponent {
-  post: Post;
+  post: Post = {} as Post;
 
-  constructor(private fb: FormBuilder, private postService: PostService, private router: Router) {
+  constructor(private fb: FormBuilder, private postService: PostService, private blogRouter: BlogRouterService) {
   }
 
   createPost(): void {
     this.postService.create(this.post)
     .subscribe(data => {
-      this.router.navigate(['/post', data['id']]);
+      this.blogRouter.goToPostDetails(data['id']);
     });
   }
 

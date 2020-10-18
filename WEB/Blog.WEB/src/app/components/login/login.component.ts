@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
+import { BlogRouterService } from 'src/app/services/blog-router.service';
 
 @Component({
   selector: 'app-login',
@@ -16,12 +17,12 @@ export class LoginComponent {
   mouseoverLogin: boolean;
   loginInvalid = false;
 
-  constructor(private router: Router, private authService: AuthService, private toastrService: ToastrService) {
+  constructor(private blogRouter: BlogRouterService, private authService: AuthService, private toastrService: ToastrService) {
 
   }
 
   cancel(): void {
-    this.router.navigate(['/blog']);
+    this.blogRouter.goToBlog();
   }
 
   login(formValues: any): void {
@@ -32,13 +33,13 @@ export class LoginComponent {
     this.authService
       .login(formValues.userName, formValues.password)
       .subscribe(response => {
-        if (!response){
-            this.loginInvalid = true;
+        if (!response) {
+          this.loginInvalid = true;
         } else {
-            this.toastrService.success('Logged successfully!');
-            this.router.navigate(['/blog']);
+          this.toastrService.success('Logged successfully!');
+          this.blogRouter.goToBlog();
         }
-    });
+      });
   }
 
   isValidUserName(loginForm: NgForm, mouseoverLogin: boolean): boolean {

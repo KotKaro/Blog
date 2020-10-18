@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Blog.Application.Commands.CheckToken;
 using Blog.Application.Commands.CreatePost;
+using Blog.Application.Commands.DeletePost;
 using Blog.Application.Commands.UpdatePost;
 using Blog.Application.DTO;
 using Blog.Application.Queries.GetPostById;
@@ -47,6 +50,8 @@ namespace Blog.API.Controllers
         [SwaggerResponse(StatusCodes.Status201Created, "Created post")]
         public async Task<PostDTO> Create(CreatePostCommand createCreatePostCommand)
         {
+            await _mediator.Send(new CheckTokenCommand { Token = GetTokenHeaderValue() });
+
             var id = Guid.NewGuid();
             createCreatePostCommand.Id = id;
             await _mediator.Send(createCreatePostCommand);
@@ -79,9 +84,34 @@ namespace Blog.API.Controllers
         [SwaggerResponse(StatusCodes.Status200OK)]
         public async Task<IActionResult> Update(UpdatePostCommand request)
         {
+            await _mediator.Send(new CheckTokenCommand { Token = GetTokenHeaderValue() });
             await _mediator.Send(request);
 
             return Ok();
+        }
+
+        /// <summary>
+        /// Deletes post with specified ID
+        /// </summary>
+        /// <param name="id">ID of post to remove</param>
+        /// <returns>Information about completed action</returns>
+        [HttpDelete]
+        [Route("{id:guid}")]
+        [SwaggerResponse(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> DeleteAsync([FromRoute] Guid id)
+        {
+            await _mediator.Send(new CheckTokenCommand {Token = GetTokenHeaderValue()});
+            await _mediator.Send(new DeletePostCommand
+            {
+                Id = id
+            });
+
+            return NoContent();
+        }
+
+        private string GetTokenHeaderValue()
+        {
+            return HttpContext.Request.Headers["jwt-token"].FirstOrDefault() ?? "no-token";
         }
     }
 }

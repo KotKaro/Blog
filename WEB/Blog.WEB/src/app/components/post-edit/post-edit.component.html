@@ -2,6 +2,6 @@
 <hr />
 <app-post-editor [(post)]="post"></app-post-editor>
 
-<button type="submit" class="btn btn-info" style="width: 100%; margin-top: 10px;" [disabled]="!isPostValid()" (click)="update()">
+<button type="submit" class="btn btn-info" [disabled]="!isPostValid()" (click)="update()">
     Update
 </button>

@@ -1,0 +1,45 @@
+@import "../about-me.component.scss";
+h2,
+h3,
+h4 {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.description {
+    font-size: 14px;
+    font-weight: 300;
+    color: #999fb3;
+}
+
+.school-name {
+    font-size: 14px;
+    color: #636a82;
+}
+
+.fa-circle {
+    top: 10px;
+    left: 0;
+    position: relative;
+    color: cornflowerblue;
+}
+
+.education-border {
+    margin-top: 20px;
+    margin-bottom: 40px;
+    border-bottom: 2px solid #b2c1ce;
+}
+
+.education-years {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.education-grade {
+    color: #636a82;
+    font-weight: 300;
+}
+
+.col {
+    padding: 0;
+}

@@ -5,7 +5,7 @@
     <UserSecretsId>bb752130-02c4-43cc-a655-e6049bafc640</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+    <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
     <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>\Blog.API.xml</DocumentationFile>
+    <DocumentationFile>.\Blog.API.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
