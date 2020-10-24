@@ -1,5 +1,7 @@
 ﻿using System;
+using Blog.Application.Commands.CreateComment;
 using Blog.Application.Commands.CreatePost;
+using Blog.Application.Commands.DeletePost;
 using Blog.Application.Commands.UpdatePost;
 using Blog.Application.Queries.GetPostById;
 using Blog.Application.Queries.GetPosts;
@@ -71,6 +73,44 @@ namespace Blog.Tests.Common
                 Id = postId ?? Guid.NewGuid(),
                 Title = title,
                 Content = content,
+            };
+        }
+
+        public static CreateCommentCommand CreateCreateCommentCommand(
+            Guid? id = null,
+            Guid? postId = null, 
+            string creatorName = "John",
+            string commentText = "Very good post!"
+        )
+        {
+            return new CreateCommentCommand
+            {
+                Id = id ?? Guid.NewGuid(),
+                PostId = postId ?? Guid.NewGuid(),
+                Content = commentText,
+                Creator = creatorName
+            };
+        }
+
+        public static Comment CreatComment(Guid? id = null, Creator creator = null, Content content = null)
+        {
+            return new Comment(
+                id ?? Guid.NewGuid(),
+                creator: creator ?? CreateCreator(),
+                content: content ?? CreateContent()
+            );
+        }
+
+        private static Creator CreateCreator(string creator = "John Smith")
+        {
+            return new Creator(creator);
+        }
+
+        public static DeleteCommentCommand CreateDeleteCommentCommand(Guid? id = null)
+        {
+            return new DeleteCommentCommand
+            {
+                Id = id ?? Guid.NewGuid()
             };
         }
     }

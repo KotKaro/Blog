@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using System.Threading;
 using Blog.Application.Commands.CheckToken;
-using Blog.Application.Exceptions;
+using Blog.Application.Mappers.Exceptions;
 using Blog.Auth;
 using Blog.Auth.Models;
 using NUnit.Framework;

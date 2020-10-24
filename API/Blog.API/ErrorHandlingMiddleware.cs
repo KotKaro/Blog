@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
-using Blog.Application.Exceptions;
+using Blog.Application.Mappers.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 

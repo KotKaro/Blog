@@ -39,7 +39,7 @@ export class AuthService {
             token: this.tokenService.getToken()
         };
 
-        this.http.post<any>('api/auth/refreshtoken', tokenInfo, options)
+        this.http.post<any>('/api/auth/refreshtoken', tokenInfo, options)
             .pipe(tap(token => this.tokenService.setToken(token)))
             .pipe(catchError(err => {
                 this.tokenService.setToken('');
@@ -51,7 +51,7 @@ export class AuthService {
         return !!this.tokenService.getToken();
     }
 
-    logout() {
+    logout(): void {
         this.tokenService.setToken('');
     }
 }

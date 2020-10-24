@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Blog.Domain.Models.Aggregates.Post
 {
@@ -7,6 +8,7 @@ namespace Blog.Domain.Models.Aggregates.Post
         public Title Title { get; private set; }
         public Content Content { get; private set; }
         public CreationDate CreationDate { get; private set; }
+        public IList<Comment> Comments { get; private set; }
 
         private Post() { }
 
@@ -15,6 +17,7 @@ namespace Blog.Domain.Models.Aggregates.Post
             Title = title ?? throw new ArgumentNullException(nameof(title));
             Content = content ?? throw new ArgumentNullException(nameof(content));
             CreationDate = new CreationDate();
+            Comments = new List<Comment>();
         }
 
         public void UpdateContent(Content content)
@@ -25,6 +28,16 @@ namespace Blog.Domain.Models.Aggregates.Post
         public void UpdateTitle(Title title)
         {
             Title = title;
+        }
+
+        public void AddComment(Comment comment)
+        {
+            if (comment == null)
+            {
+                throw new ArgumentNullException(nameof(comment));
+            }
+
+            Comments.Add(comment);
         }
     }
 }

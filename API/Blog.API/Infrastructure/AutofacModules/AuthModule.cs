@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using Blog.Auth;
 using Blog.Auth.Abstractions;
-using Blog.Auth.Models;
 using Microsoft.Extensions.Options;
 
 namespace Blog.API.Infrastructure.AutofacModules
@@ -15,9 +14,6 @@ namespace Blog.API.Infrastructure.AutofacModules
                 .As<IPasswordHasher>()
                 .InstancePerLifetimeScope();
 
-            builder.Register(_ => new JwtContainerModel())
-                .As<IAuthContainerModel>()
-                .InstancePerLifetimeScope();
 
             builder.Register(context
                     => new JwtService(context.Resolve<IAuthContainerModel>())

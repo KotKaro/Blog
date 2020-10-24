@@ -4,7 +4,7 @@ using Blog.Domain.Models;
 
 namespace Blog.Domain.DataAccess
 {
-    public interface IRepository<TEntity> where TEntity : Entity, IAggregateRoot
+    public interface IRepository<TEntity> where TEntity : Entity
     {
         IUnitOfWork UnitOfWork { get; }
         Task<TEntity[]> GetAllAsync();

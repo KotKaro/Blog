@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Blog.DataAccess
 {
-    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity, IAggregateRoot
+    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
     {
         protected readonly DbContext DbContext;
 

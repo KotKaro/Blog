@@ -16,7 +16,9 @@ namespace Blog.Application.Mappers
                 .ForMember(dest => dest.Content,
                     act => act.MapFrom(src => src.Content.Value))
                 .ForMember(dest => dest.CreationDate,
-                    act => act.MapFrom(src => src.CreationDate.Value));
+                    act => act.MapFrom(src => src.CreationDate.Value))
+                .ForMember(dest => dest.Comments,
+                    act => act.MapFrom(src => src.Comments));
         }
     }
 }

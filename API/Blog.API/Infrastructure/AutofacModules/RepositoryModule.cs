@@ -16,6 +16,10 @@ namespace Blog.API.Infrastructure.AutofacModules
             containerBuilder.RegisterType<UserRepository>()
                 .As<IUserRepository>()
                 .InstancePerLifetimeScope();
+
+            containerBuilder.RegisterType<CommentRepository>()
+                .As<ICommentRepository>()
+                .InstancePerLifetimeScope();
         }
     }
 }

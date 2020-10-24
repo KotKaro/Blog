@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Autofac;
 using Blog.API.Controllers;
-using Blog.Application.Exceptions;
+using Blog.Application.Mappers.Exceptions;
 using Blog.Application.Queries.Login;
 using Blog.Application.Queries.RefreshToken;
 using Blog.Auth.Abstractions;

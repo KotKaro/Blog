@@ -101,7 +101,7 @@ namespace Blog.API.Controllers
         public async Task<IActionResult> DeleteAsync([FromRoute] Guid id)
         {
             await _mediator.Send(new CheckTokenCommand {Token = GetTokenHeaderValue()});
-            await _mediator.Send(new DeletePostCommand
+            await _mediator.Send(new DeleteCommentCommand
             {
                 Id = id
             });

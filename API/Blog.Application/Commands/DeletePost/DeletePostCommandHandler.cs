@@ -8,16 +8,16 @@ using MediatR;
 
 namespace Blog.Application.Commands.DeletePost
 {
-    public class DeletePostCommandHandler : IRequestHandler<DeletePostCommand, Unit>
+    public class DeleteCommentCommandHandler : IRequestHandler<DeleteCommentCommand, Unit>
     {
         private readonly IPostRepository _repository;
 
-        public DeletePostCommandHandler(IPostRepository repository)
+        public DeleteCommentCommandHandler(IPostRepository repository)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public async Task<Unit> Handle(DeletePostCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteCommentCommand request, CancellationToken cancellationToken)
         {
             var post = await _repository.GetByIdAsync(request.Id);
             if (post == null)

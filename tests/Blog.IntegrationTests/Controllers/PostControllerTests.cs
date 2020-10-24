@@ -24,15 +24,10 @@ namespace Blog.IntegrationTests.Controllers
     [TestFixture]
     public class PostControllerTests : IntegrationTestBase
     {
-        private string _token;
-
         [SetUp]
         public void SetUp()
         {
             BlogContext.Set<Post>().RemoveRange(BlogContext.Set<Post>());
-            _token = Container.Resolve<IJwtService>()
-                .GenerateToken(new Claim("username", "John"))
-                .Value;
         }
 
         [Test]
@@ -87,7 +82,7 @@ namespace Blog.IntegrationTests.Controllers
         {
             //Arrange
             var mediator = Container.Resolve<IMediator>();
-            PostsController controller = CreatePostControllerWithTokenHeader(mediator);
+            PostsController controller = CreatePostControllerWithTokenHeader(Container);
 
             //Act
             var result = await controller.Create(MockFactory.CreateCreatePostCommand());
@@ -120,7 +115,7 @@ namespace Blog.IntegrationTests.Controllers
         {
             //Arrange
             var mediator = Container.Resolve<IMediator>();
-            var controller = CreatePostControllerWithTokenHeader(mediator);
+            var controller = CreatePostControllerWithTokenHeader(Container);
 
             Assert.ThrowsAsync<RecordNotFoundException>(async () =>
             {
@@ -133,7 +128,7 @@ namespace Blog.IntegrationTests.Controllers
         {
             //Arrange
             var mediator = Container.Resolve<IMediator>();
-            var controller = CreatePostControllerWithTokenHeader(mediator);
+            var controller = CreatePostControllerWithTokenHeader(Container);
 
             var post = MockFactory.CreatePost();
             await BlogContext.Set<Post>().AddAsync(post);
@@ -156,7 +151,7 @@ namespace Blog.IntegrationTests.Controllers
         {
             //Arrange
             var mediator = Container.Resolve<IMediator>();
-            var controller = CreatePostControllerWithTokenHeader(mediator);
+            var controller = CreatePostControllerWithTokenHeader(Container);
 
             var post = MockFactory.CreatePost();
             await BlogContext.Set<Post>().AddAsync(post);
@@ -177,7 +172,7 @@ namespace Blog.IntegrationTests.Controllers
         {
             //Arrange
             var mediator = Container.Resolve<IMediator>();
-            var controller = CreatePostControllerWithTokenHeader(mediator);
+            var controller = CreatePostControllerWithTokenHeader(Container);
 
             var post = MockFactory.CreatePost();
             await BlogContext.Set<Post>().AddAsync(post);
@@ -195,7 +190,7 @@ namespace Blog.IntegrationTests.Controllers
         {
             //Arrange
             var mediator = Container.Resolve<IMediator>();
-            var controller = CreatePostControllerWithTokenHeader(mediator);
+            var controller = CreatePostControllerWithTokenHeader(Container);
 
             //Act + Assert
             Assert.ThrowsAsync<RecordNotFoundException>(async () =>
@@ -213,7 +208,7 @@ namespace Blog.IntegrationTests.Controllers
             await BlogContext.SaveChangesAsync();
 
             var mediator = Container.Resolve<IMediator>();
-            var controller = CreatePostControllerWithTokenHeader(mediator);
+            var controller = CreatePostControllerWithTokenHeader(Container);
 
             //Act
             await controller.DeleteAsync(post.Id);
@@ -225,12 +220,37 @@ namespace Blog.IntegrationTests.Controllers
             });
         }
 
-        private PostsController CreatePostControllerWithTokenHeader(IMediator mediator)
+        [Test]
+        public async Task When_GetByIdCalledForPostWithComments_Expect_PostGotLoadedComments()
         {
+            //Arrange
+            var controller = CreatePostControllerWithTokenHeader(Container);
+            var post = await controller.Create(MockFactory.CreateCreatePostCommand());
+
+            var commentController = new CommentsController(Container.Resolve<IMediator>());
+            await commentController.CreateAsync(MockFactory.CreateCreateCommentCommand(postId: post.Id));
+
+            await BlogContext.SaveChangesAsync();
+
+
+            //Act
+            var retrievedPost = await controller.GetById(post.Id);
+
+            //Assert
+            Assert.That(retrievedPost.Comments.Length, Is.EqualTo(1));
+        }
+
+        public static PostsController CreatePostControllerWithTokenHeader(IContainer container)
+        {
+            var mediator = container.Resolve<IMediator>();
             var controller = new PostsController(mediator);
+            string token = container.Resolve<IJwtService>()
+                .GenerateToken(new Claim("username", "John"))
+                .Value;
+
             var httpContextMock = new Mock<HttpContext>();
             var httpRequestMock = new Mock<HttpRequest>();
-            var headers = new Dictionary<string, StringValues> {{"jwt-token", _token}};
+            var headers = new Dictionary<string, StringValues> { { "jwt-token", token } };
 
             httpRequestMock.Setup(x => x.Headers)
                 .Returns(new HeaderDictionary(headers));

@@ -24,6 +24,8 @@ FROM build AS publish
 RUN dotnet publish "Blog.API.csproj" -c Release -o /app/publish
 COPY "**/Blog.API.xml" "/app"
 
+RUN dotnet dev-certs https --clean
+
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .

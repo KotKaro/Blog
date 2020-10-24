@@ -10,7 +10,8 @@ namespace Blog.Infrastructure.Configurations
         {
             builder.ToTable($"{nameof(Post)}s");
             builder.Property(x => x.Id)
-                .HasColumnName(nameof(Post.Id));
+                .HasColumnName(nameof(Post.Id))
+                .ValueGeneratedNever();
 
             builder.OwnsOne(x => x.Content, content =>
             {
@@ -25,6 +26,7 @@ namespace Blog.Infrastructure.Configurations
                     .HasColumnName(nameof(Post.Title))
                     .IsRequired();
             });
+
             builder.OwnsOne(x => x.CreationDate, creationDate =>
             {
                 creationDate.Property(y => y.Value)
@@ -32,6 +34,9 @@ namespace Blog.Infrastructure.Configurations
                     .IsRequired();
             });
 
+            builder.HasMany(x => x.Comments)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

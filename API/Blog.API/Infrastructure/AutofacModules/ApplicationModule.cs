@@ -6,6 +6,8 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using Blog.Application.Mappers;
+using Blog.Auth.Abstractions;
+using Blog.Auth.Models;
 using Blog.DataAccess;
 using Blog.Domain.DataAccess;
 using Blog.Infrastructure;
@@ -38,6 +40,7 @@ namespace Blog.API.Infrastructure.AutofacModules
 
             RegisterAutoMapper(containerBuilder);
             RegisterDbContext<BlogDbContext>(containerBuilder);
+            RegisterAuthContainerModel(containerBuilder);
         }
 
         private static void RegisterAutoMapper(ContainerBuilder containerBuilder)
@@ -64,6 +67,20 @@ namespace Blog.API.Infrastructure.AutofacModules
             })
                 .As<IMapper>()
                 .SingleInstance();
+        }
+
+        private void RegisterAuthContainerModel(ContainerBuilder containerBuilder)
+        {
+            var containerModel = new JwtContainerModel();
+            string key = _configuration.GetSection("AuthContainer")["SecretKey"];
+            if (!string.IsNullOrWhiteSpace(key))
+            {
+                containerModel.SecretKey = key;
+            }
+
+            containerBuilder.Register(_ => containerModel)
+                .As<IAuthContainerModel>()
+                .InstancePerLifetimeScope();
         }
 
         private void RegisterSqlConnection(ContainerBuilder containerBuilder, string connectionString)

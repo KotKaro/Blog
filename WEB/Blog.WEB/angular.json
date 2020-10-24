@@ -63,11 +63,13 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "blog-spa:build"
+                        "browserTarget": "blog-spa:build",
+                        "proxyConfig": "src/proxy-local.conf.json"
                     },
                     "configurations": {
                         "production": {
-                            "browserTarget": "blog-spa:build:production"
+                            "browserTarget": "blog-spa:build:production",
+                            "proxyConfig": "src/proxy-prod.conf.json"
                         }
                     }
                 },

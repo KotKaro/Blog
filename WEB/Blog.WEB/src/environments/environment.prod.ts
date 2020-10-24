@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  apiUrl: 'https://vps-205283cb.vps.ovh.net/'
 };

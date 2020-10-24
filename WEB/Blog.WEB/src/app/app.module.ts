@@ -34,6 +34,9 @@ import { AboutMeEducationComponent } from './components/about-me/about-me-educat
 import { AboutMeSkillsComponent } from './components/about-me/about-me-skills/about-me-skills.component';
 import { AboutMeExperienceComponent } from './components/about-me/about-me-experience/about-me-experience.component';
 import { AboutMeProfilesComponent } from './components/about-me/about-me-profiles/about-me-profiles.component';
+import { PathInterceptor } from './interceptors/path.interceptor';
+import { LoadingComponent } from './components/loading/loading.component';
+import { LoadingService } from './services/loading.service';
 
 @NgModule({
   declarations: [
@@ -54,7 +57,8 @@ import { AboutMeProfilesComponent } from './components/about-me/about-me-profile
     AboutMeEducationComponent,
     AboutMeSkillsComponent,
     AboutMeExperienceComponent,
-    AboutMeProfilesComponent
+    AboutMeProfilesComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,
@@ -75,11 +79,17 @@ import { AboutMeProfilesComponent } from './components/about-me/about-me-profile
     BlogRouterService,
     AuthenticatedActivator,
     ConfirmDialogService,
+    LoadingService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    }
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: PathInterceptor,
+      multi: true
+    },
   ],
   bootstrap: [AppComponent]
 })

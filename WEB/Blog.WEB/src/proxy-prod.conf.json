@@ -1,0 +1,9 @@
+{
+    "/api/*": {
+        "target": "http://vps-205283cb.vps.ovh.net/",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug",
+        "pathRewrite": { "^/api": "" }
+    }
+}

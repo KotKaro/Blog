@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Blog.Application.Exceptions;
+using Blog.Application.Mappers.Exceptions;
 using Blog.Auth.Abstractions;
 using MediatR;
 

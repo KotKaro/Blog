@@ -10,7 +10,7 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit{
-  title = 'blog-spa';
+  title = 'Karol Kot';
   @ViewChild('pageHeader') header;
 
   constructor(private router: Router, private authService: AuthService) {

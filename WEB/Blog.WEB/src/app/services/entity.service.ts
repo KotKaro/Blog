@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { Entity } from '../models/entity';
+import { environment } from '../../environments/environment';
 
 export abstract class EntityService<TEntity extends Entity> {
     constructor(protected endpoint: string, protected httpClient: HttpClient, private toastr: ToastrService) {
