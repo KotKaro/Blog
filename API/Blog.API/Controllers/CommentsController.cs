@@ -9,24 +9,22 @@ namespace Blog.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CommentsController : ControllerBase
+    public class CommentsController : BlogControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public CommentsController(IMediator mediator)
+        public CommentsController(IMediator mediator) : base(mediator)
         {
-            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         public async Task CreateAsync(CreateCommentCommand command)
         {
             command.Id = Guid.NewGuid();
-            await _mediator.Send(command);
+            await mediator.Send(command);
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            await _mediator.Send(new DeleteCommentCommand
+            await CheckTokenAsync();
+            await mediator.Send(new DeleteCommentCommand
             {
                 Id = id
             });

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Blog.Application.Commands.CheckToken;
 using Blog.Application.Commands.CreatePost;
 using Blog.Application.Commands.DeletePost;
 using Blog.Application.Commands.UpdatePost;
@@ -18,13 +16,10 @@ namespace Blog.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class PostsController : ControllerBase
+    public class PostsController : BlogControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public PostsController(IMediator mediator)
+        public PostsController(IMediator mediator) : base(mediator)
         {
-            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         /// <summary>
@@ -35,7 +30,7 @@ namespace Blog.API.Controllers
         [HttpGet]
         [SwaggerResponse(HttpStatusCode.OK)]
         public async Task<PostDTO[]> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
-            => await _mediator.Send(new GetPostsQuery
+            => await mediator.Send(new GetPostsQuery
             {
                 PageNumber = pageNumber,
                 PageSize = pageSize
@@ -50,11 +45,11 @@ namespace Blog.API.Controllers
         [SwaggerResponse(StatusCodes.Status201Created, "Created post")]
         public async Task<PostDTO> Create(CreatePostCommand createCreatePostCommand)
         {
-            await _mediator.Send(new CheckTokenCommand { Token = GetTokenHeaderValue() });
+            await CheckTokenAsync();
 
             var id = Guid.NewGuid();
             createCreatePostCommand.Id = id;
-            await _mediator.Send(createCreatePostCommand);
+            await mediator.Send(createCreatePostCommand);
 
             return await GetById(id);
         }
@@ -69,7 +64,7 @@ namespace Blog.API.Controllers
         [SwaggerResponse(StatusCodes.Status200OK)]
         public async Task<PostDTO> GetById([FromRoute] Guid id)
         {
-            return await _mediator.Send(new GetPostByIdQuery
+            return await mediator.Send(new GetPostByIdQuery
             {
                 Id = id
             });
@@ -84,8 +79,8 @@ namespace Blog.API.Controllers
         [SwaggerResponse(StatusCodes.Status200OK)]
         public async Task<IActionResult> Update(UpdatePostCommand request)
         {
-            await _mediator.Send(new CheckTokenCommand { Token = GetTokenHeaderValue() });
-            await _mediator.Send(request);
+            await CheckTokenAsync();
+            await mediator.Send(request);
 
             return Ok();
         }
@@ -100,18 +95,13 @@ namespace Blog.API.Controllers
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteAsync([FromRoute] Guid id)
         {
-            await _mediator.Send(new CheckTokenCommand {Token = GetTokenHeaderValue()});
-            await _mediator.Send(new DeleteCommentCommand
+            await CheckTokenAsync();
+            await mediator.Send(new DeleteCommentCommand
             {
                 Id = id
             });
 
             return NoContent();
-        }
-
-        private string GetTokenHeaderValue()
-        {
-            return HttpContext.Request.Headers["jwt-token"].FirstOrDefault() ?? "no-token";
         }
     }
 }
