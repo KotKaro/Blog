@@ -15,4 +15,8 @@
     <div [innerHTML]="post.content">
     </div>
 </div>
+<hr />
+<app-comment-create [postId]="post.id" (commentCreatedEventEmitter)="onCommentCreated($event)"></app-comment-create>
+<hr />
+<app-comment-list [comments]="post.comments" (commentRemoveEventEmitter)="onCommentRemoved($event)"></app-comment-list>
 <app-confirm-dialog></app-confirm-dialog>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Comment } from 'src/app/models/comment.model';
 import { Post } from 'src/app/models/post.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { BlogRouterService } from 'src/app/services/blog-router.service';
@@ -12,7 +13,7 @@ import { PostService } from 'src/app/services/post.service';
   styleUrls: ['./post-details.component.scss']
 })
 export class PostDetailsComponent {
-  post: Post = { content: '', title: '', id: '', creationDate: new Date() };
+  post: Post = { content: '', title: '', id: '', creationDate: new Date(), comments: [] };
 
   constructor(
     private route: ActivatedRoute,
@@ -49,5 +50,17 @@ export class PostDetailsComponent {
       .subscribe(() => {
         this.blogRouter.goToBlog();
       });
+  }
+
+  onCommentCreated(comment: Comment): void {
+    this.post.comments.push(comment);
+  }
+
+  onCommentRemoved(commentId: string): void {
+    if (!commentId) {
+      return;
+    }
+
+    this.post.comments = this.post.comments.filter(c => c.id !== commentId);
   }
 }

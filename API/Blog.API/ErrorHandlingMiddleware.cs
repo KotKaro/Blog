@@ -31,7 +31,7 @@ namespace Blog.API
         {
             var code = HttpStatusCode.InternalServerError;
 
-            if (ex.GetType() == typeof(LoginException))
+            if (ex.GetType() == typeof(LoginException) || ex.GetType() == typeof(TokenInvalidException))
             {
                 code = HttpStatusCode.Unauthorized;
             }

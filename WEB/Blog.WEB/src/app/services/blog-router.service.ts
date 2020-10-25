@@ -31,4 +31,8 @@ export class BlogRouterService {
 
         this.router.navigate(['/post/edit/', id]);
     }
+
+    goToLogin(): void {
+        this.router.navigate(['/login']);
+    }
 }

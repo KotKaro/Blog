@@ -5,6 +5,7 @@ using Blog.DataAccess;
 using Blog.Domain.DataAccess;
 using Blog.Domain.Models.Aggregates.Post;
 using Blog.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Infrastructure.Repositories
 {
@@ -16,7 +17,8 @@ namespace Blog.Infrastructure.Repositories
 
         protected override IQueryable<Post> GetQueryWithIncludes()
         {
-            return DbContext.Set<Post>();
+            return DbContext.Set<Post>()
+                .Include(x => x.Comments);
         }
 
         public async Task<IEnumerable<Post>> GetAllAsync(int pageNumber = 1, int pageSize = 10)

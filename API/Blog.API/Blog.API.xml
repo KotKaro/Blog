@@ -29,6 +29,20 @@
             <param name="query">Object with existing token</param>
             <returns>New token</returns>
         </member>
+        <member name="M:Blog.API.Controllers.CommentsController.CreateAsync(Blog.Application.Commands.CreateComment.CreateCommentCommand)">
+            <summary>
+            Creates comment for post specified in command
+            </summary>
+            <param name="command">Command details about comment to create</param>
+            <returns>PostDTO objects</returns>
+        </member>
+        <member name="M:Blog.API.Controllers.CommentsController.DeleteAsync(System.Guid)">
+            <summary>
+            Deletes comment with specified id
+            </summary>
+            <param name="id">ID of comment to delete</param>
+            <returns>PostDTO objects</returns>
+        </member>
         <member name="M:Blog.API.Controllers.PostsController.GetAll(System.Int32,System.Int32)">
             <summary>
             Returns specific amount of posts described in query.

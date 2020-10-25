@@ -1,0 +1,7 @@
+<h4>Post your comment</h4>
+<hr />
+<form [formGroup]="commentCreateForm">
+    <input formControlName="creator" class="form-control" placeholder="Please enter your name">
+    <textarea formControlName="content" class="form-control" placeholder="Please enter comment text"></textarea>
+    <button class="btn btn-primary" [disabled]="!commentCreateForm.valid" (click)="addComment()">Add comment</button>
+</form>

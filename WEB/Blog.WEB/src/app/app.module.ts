@@ -37,6 +37,10 @@ import { AboutMeProfilesComponent } from './components/about-me/about-me-profile
 import { PathInterceptor } from './interceptors/path.interceptor';
 import { LoadingComponent } from './components/loading/loading.component';
 import { LoadingService } from './services/loading.service';
+import { CommentCreateComponent } from './components/comment-create/comment-create.component';
+import { CommentService } from './services/comment.service';
+import { CommentListComponent } from './components/comment-list/comment-list.component';
+import { UnauthorizedInterceptor } from './interceptors/unauthorized.interceptor';
 
 @NgModule({
   declarations: [
@@ -58,7 +62,9 @@ import { LoadingService } from './services/loading.service';
     AboutMeSkillsComponent,
     AboutMeExperienceComponent,
     AboutMeProfilesComponent,
-    LoadingComponent
+    LoadingComponent,
+    CommentCreateComponent,
+    CommentListComponent
   ],
   imports: [
     BrowserModule,
@@ -72,6 +78,7 @@ import { LoadingService } from './services/loading.service';
   ],
   providers: [
     PostService,
+    CommentService,
     AuthService,
     TokenService,
     PostResolver,
@@ -88,6 +95,11 @@ import { LoadingService } from './services/loading.service';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: PathInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UnauthorizedInterceptor,
       multi: true
     },
   ],

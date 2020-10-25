@@ -1,0 +1,21 @@
+<h4>Comments</h4>
+<hr />
+<div *ngFor="let comment of comments">
+    <div>{{comment.content}}</div>
+    <div style="text-align: right;">{{comment.creator}}</div>
+    <div class="d-flex justify-content-center" *ngIf="isAuthenticated()">
+        <button class="btn btn-danger w-100" (click)="removeComment(comment.id)">Remove</button>
+    </div>
+    <hr />
+</div>
+<div *ngIf="!(!!comments) || comments.length === 0">
+    <h4 class="comment">
+        <div>
+            No comments available right now.
+        </div>
+        <div>
+            You can share your opinion and add one.
+        </div>
+    </h4>
+    <hr />
+</div>
