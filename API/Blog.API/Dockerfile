@@ -22,7 +22,6 @@ RUN dotnet build "Blog.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
 RUN dotnet publish "Blog.API.csproj" -c Release -o /app/publish
-COPY "**/Blog.API.xml" "/app"
 
 RUN dotnet dev-certs https --clean
 
