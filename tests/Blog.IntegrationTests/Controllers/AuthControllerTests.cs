@@ -58,7 +58,6 @@ namespace Blog.IntegrationTests.Controllers
         [Test]
         public async Task When_UsernameExistsButPasswordIsWrong_Expect_LoginExceptionThrown()
         {
-            const string password = "test123";
             await BlogContext.Set<User>().AddAsync(MockFactory.CreateUser(new UserDetails("test", _passwordHasher.Hash("test123"))));
             await BlogContext.SaveChangesAsync();
 
@@ -105,14 +104,6 @@ namespace Blog.IntegrationTests.Controllers
             var newToken = await _authController.RefreshToken(new RefreshTokenQuery { Token = token.Value });
 
             Assert.NotNull(newToken);
-        }
-
-        [Test]
-        public void ToBeDeleted()
-        {
-            var hash = _passwordHasher.Hash("test");
-
-
         }
     }
 }

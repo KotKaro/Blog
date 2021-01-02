@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Blog.Domain.DataAccess;
 using MediatR;
@@ -12,7 +13,7 @@ namespace Blog.API.Behaviors
 
         public TransactionBehaviour(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
