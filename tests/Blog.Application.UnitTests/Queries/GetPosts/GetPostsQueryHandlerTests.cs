@@ -28,6 +28,7 @@ namespace Blog.Application.UnitTests.Queries.GetPosts
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
+                // ReSharper disable once ObjectCreationAsStatement
                 new GetPostsQueryHandler(null, Mapper.GetInstance());
             });
         }
@@ -37,6 +38,7 @@ namespace Blog.Application.UnitTests.Queries.GetPosts
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
+                // ReSharper disable once ObjectCreationAsStatement
                 new GetPostsQueryHandler(_postRepositoryMock.Object, null);
             });
         }

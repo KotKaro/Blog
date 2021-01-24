@@ -26,6 +26,7 @@ namespace Blog.Application.UnitTests.Commands.CreatePost
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
+                // ReSharper disable once ObjectCreationAsStatement
                 new CreatePostCommandHandler(null);
             });
         }

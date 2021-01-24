@@ -1,14 +1,16 @@
 {
     "hosting": {
-        "public": "dist\\blog-spa",
+        "public": "dist/blog-spa",
         "ignore": [
             "firebase.json",
             "**/.*",
             "**/node_modules/**"
         ],
-        "rewrites": [{
-            "source": "**",
-            "destination": "/index.html"
-        }]
+        "rewrites": [
+            {
+                "source": "**",
+                "destination": "/index.html"
+            }
+        ]
     }
 }
