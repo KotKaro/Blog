@@ -13,6 +13,7 @@ namespace Blog.Domain.UnitTests.Models.Aggregates.Post
             // Act + Assert
             Assert.Throws<ArgumentNullException>(() =>
             {
+                // ReSharper disable once UnusedVariable
                 var comment = new Comment(Guid.NewGuid(), null, new Content("test"));
             });
         }
@@ -23,6 +24,7 @@ namespace Blog.Domain.UnitTests.Models.Aggregates.Post
             // Act + Assert
             Assert.Throws<ArgumentNullException>(() =>
             {
+                // ReSharper disable once UnusedVariable
                 var comment = new Comment(Guid.NewGuid(), new Creator("test"), null);
             });
         }

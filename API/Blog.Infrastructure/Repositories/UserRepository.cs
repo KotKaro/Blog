@@ -22,8 +22,6 @@ namespace Blog.Infrastructure.Repositories
 
         public Task<User> GetByUsernameAsync(string username)
         {
-            var all = GetQueryWithIncludes().ToArray();
-
             return GetQueryWithIncludes()
                 .FirstOrDefaultAsync(x =>
                     x.UserDetails.Username.Equals(username, StringComparison.CurrentCultureIgnoreCase));

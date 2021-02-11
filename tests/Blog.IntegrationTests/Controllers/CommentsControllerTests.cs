@@ -31,7 +31,6 @@ namespace Blog.IntegrationTests.Controllers
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            var mediator = Container.Resolve<IMediator>();
             _commentsController = CreateCommentsControllerWithTokenHeader(Container);
         }
 
@@ -118,7 +117,7 @@ namespace Blog.IntegrationTests.Controllers
         {
             var mediator = container.Resolve<IMediator>();
             var controller = new CommentsController(mediator);
-            string token = container.Resolve<IJwtService>()
+            var token = container.Resolve<IJwtService>()
                 .GenerateToken(new Claim("username", "John"))
                 .Value;
 

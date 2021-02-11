@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Docker.DotNet;
@@ -16,7 +17,7 @@ namespace Blog.IntegrationTests.Common
 
         public DockerContainerStarter()
         {
-            DockerClient = new DockerClientConfiguration(new Uri("npipe://./pipe/docker_engine")).CreateClient();
+            DockerClient = new DockerClientConfiguration(new Uri(GetDockerEngineUri())).CreateClient();
             _runningContainers = new List<(string, int)>();
         }
 
@@ -30,9 +31,10 @@ namespace Blog.IntegrationTests.Common
             return result;
         }
 
+        // ReSharper disable once UnusedMember.Global
         public async Task PruneContainers()
         {
-            foreach ((string containerId, int containerPort) in _runningContainers)
+            foreach (var (containerId, _) in _runningContainers)
             {
                 if (await DockerClient.Containers.StopContainerAsync(
                     containerId,
@@ -58,15 +60,15 @@ namespace Blog.IntegrationTests.Common
                 return await GetExistingContainerInfoAsync(createContainerParameters);
             }
 
-            return await RunNewContainerAsync(createContainerParameters, port);
+            return await RunNewContainerAsync(createContainerParameters, port.Value);
         }
 
-        private async Task<(string, int)> RunNewContainerAsync(CreateContainerParameters createContainerParameters, int? port)
+        private async Task<(string, int)> RunNewContainerAsync(CreateContainerParameters createContainerParameters, int port)
         {
             var container = await DockerClient.Containers.CreateContainerAsync(createContainerParameters);
             await StartContainer(createContainerParameters.Image, container.ID);
 
-            var containerInfo = new ValueTuple<string, int>(container.ID, port.Value);
+            var containerInfo = new ValueTuple<string, int>(container.ID, port);
             _runningContainers.Add(containerInfo);
 
             return containerInfo;
@@ -74,7 +76,7 @@ namespace Blog.IntegrationTests.Common
 
         private async Task<(string, int)> GetExistingContainerInfoAsync(CreateContainerParameters createContainerParameters)
         {
-            ContainerListResponse existingContainer = await GetExistingContainerWithName(createContainerParameters);
+            var existingContainer = await GetExistingContainerWithName(createContainerParameters);
             int? port = existingContainer.Ports.First(x => !string.IsNullOrWhiteSpace(x.IP)).PublicPort;
             return (existingContainer.ID, port.Value);
         }
@@ -86,7 +88,7 @@ namespace Blog.IntegrationTests.Common
 
         private Progress<string> GetProgressWhichCancelTokenWhenLogsStop(CancellationTokenSource tokenSource)
         {
-            int counter = 0;
+            var counter = 0;
             var adjustedCounter = 0;
 
             return new Progress<string>(_ =>
@@ -137,7 +139,7 @@ namespace Blog.IntegrationTests.Common
                     GetProgressWhichCancelTokenWhenLogsStop(tokenSource)
                 );
             }
-            catch (Exception e)
+            catch
             {
                 // ignored
             }
@@ -146,6 +148,12 @@ namespace Blog.IntegrationTests.Common
         private async Task<ContainerListResponse> GetExistingContainerWithName(CreateContainerParameters createContainerParameters)
         {
             var containerList = await DockerClient.Containers.ListContainersAsync(new ContainersListParameters());
+
+            if (containerList == null)
+            {
+                return new ContainerListResponse();
+            }
+
             return containerList.FirstOrDefault(
                 x => x.Image == createContainerParameters.Image
                      && x.Names.Any(containerName => containerName.Contains(createContainerParameters.Name))
@@ -160,6 +168,16 @@ namespace Blog.IntegrationTests.Common
         private static int GetRandomPort()
         {
             return new Random((int)DateTime.UtcNow.Ticks).Next(10000, 12000);
+        }
+
+        private static string GetDockerEngineUri()
+        {
+            const string macUrl = "unix:///var/run/docker.sock";
+            const string windowsUrl = "npipe://./pipe/docker_engine";
+            
+            var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
+            return isWindows ? windowsUrl : macUrl;
         }
     }
 }

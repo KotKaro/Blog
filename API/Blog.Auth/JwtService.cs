@@ -20,11 +20,11 @@ namespace Blog.Auth
 
         public bool IsTokenValid(JwtToken token)
         {
-            TokenValidationParameters tokenValidationParameters = GetTokenValidationParameters();
+            var tokenValidationParameters = GetTokenValidationParameters();
 
             try
             {
-                _jwtSecurityTokenHandler.ValidateToken(token.Value, tokenValidationParameters, out SecurityToken validatedToken);
+                _jwtSecurityTokenHandler.ValidateToken(token.Value, tokenValidationParameters, out _);
 
                 return true;
             }
@@ -34,41 +34,34 @@ namespace Blog.Auth
             }
         }
 
-        public JwtToken GenerateToken(params Claim[] clamis)
+        public JwtToken GenerateToken(params Claim[] claims)
         {
-            if (clamis?.Length == null || clamis.Length == 0)
+            if (claims?.Length == null || claims.Length == 0)
                 throw new ArgumentException("Arguments to create token are not valid.");
 
-            SecurityTokenDescriptor securityTokenDescriptor = new SecurityTokenDescriptor
+            var securityTokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(clamis),
+                Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddMinutes(Convert.ToInt32(_authContainer.ExpireMinutes)),
                 SigningCredentials = new SigningCredentials(GetSymmetricSecurityKey(), _authContainer.SecurityAlgorithm)
             };
 
-            SecurityToken securityToken = _jwtSecurityTokenHandler.CreateToken(securityTokenDescriptor);
+            var securityToken = _jwtSecurityTokenHandler.CreateToken(securityTokenDescriptor);
 
             return new JwtToken(_jwtSecurityTokenHandler.WriteToken(securityToken));
         }
 
         public IEnumerable<Claim> GetTokenClaims(JwtToken token)
         {
-            TokenValidationParameters tokenValidationParameters = GetTokenValidationParameters();
-
-            try
-            {
-                ClaimsPrincipal tokenValid = _jwtSecurityTokenHandler.ValidateToken(token.Value, tokenValidationParameters, out SecurityToken validatedToken);
-                return tokenValid.Claims;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            var tokenValidationParameters = GetTokenValidationParameters();
+            var tokenValid = _jwtSecurityTokenHandler.ValidateToken(token.Value, tokenValidationParameters, out _);
+            
+            return tokenValid.Claims;
         }
 
         private SecurityKey GetSymmetricSecurityKey()
         {
-            byte[] symmetricKey = Convert.FromBase64String(_authContainer.SecretKey);
+            var symmetricKey = Convert.FromBase64String(_authContainer.SecretKey);
             return new SymmetricSecurityKey(symmetricKey);
         }
 

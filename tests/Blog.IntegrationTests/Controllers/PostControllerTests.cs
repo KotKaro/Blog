@@ -37,7 +37,7 @@ namespace Blog.IntegrationTests.Controllers
             var mediator = Container.Resolve<IMediator>();
             var controller = new PostsController(mediator);
 
-            BlogContext.Set<Post>().AddRange
+            await BlogContext.Set<Post>().AddRangeAsync
             (
                 Enumerable.Range(0, 10).Select(x => MockFactory.CreatePost())
             );
@@ -52,13 +52,13 @@ namespace Blog.IntegrationTests.Controllers
         }
 
         [Test]
-        public async Task When_GetCalledWithPageOneSizeTenAndNextGetCalledWithPageTwoOfSizeTen_Expect_AllFirstPagePostIdsDiffrentThanSecondPagePostIds()
+        public async Task When_GetCalledWithPageOneSizeTenAndNextGetCalledWithPageTwoOfSizeTen_Expect_AllFirstPagePostIdsDifferentThanSecondPagePostIds()
         {
             //Arrange
             var mediator = Container.Resolve<IMediator>();
             var controller = new PostsController(mediator);
 
-            BlogContext.Set<Post>().AddRange
+            await BlogContext.Set<Post>().AddRangeAsync
             (
                 Enumerable.Range(0, 20).Select(x => MockFactory.CreatePost())
             );
@@ -81,8 +81,7 @@ namespace Blog.IntegrationTests.Controllers
         public async Task When_CreatePostCalledWithProperCommand_Expect_PostCreated()
         {
             //Arrange
-            var mediator = Container.Resolve<IMediator>();
-            PostsController controller = CreatePostControllerWithTokenHeader(Container);
+            var controller = CreatePostControllerWithTokenHeader(Container);
 
             //Act
             var result = await controller.Create(MockFactory.CreateCreatePostCommand());
@@ -99,7 +98,7 @@ namespace Blog.IntegrationTests.Controllers
             var controller = new PostsController(mediator);
 
             var post = MockFactory.CreatePost();
-            BlogContext.Set<Post>().Add(post);
+            await BlogContext.Set<Post>().AddAsync(post);
             await BlogContext.SaveChangesAsync();
 
             //Act
@@ -111,10 +110,9 @@ namespace Blog.IntegrationTests.Controllers
         }
 
         [Test]
-        public async Task When_UpdateCalledAndPostDoesNotExists_Expect_RecordNotFoundExceptionThrown()
+        public void When_UpdateCalledAndPostDoesNotExists_Expect_RecordNotFoundExceptionThrown()
         {
             //Arrange
-            var mediator = Container.Resolve<IMediator>();
             var controller = CreatePostControllerWithTokenHeader(Container);
 
             Assert.ThrowsAsync<RecordNotFoundException>(async () =>
@@ -127,7 +125,6 @@ namespace Blog.IntegrationTests.Controllers
         public async Task When_UpdateCalledAndPostExists_Expect_PostToBeUpdated()
         {
             //Arrange
-            var mediator = Container.Resolve<IMediator>();
             var controller = CreatePostControllerWithTokenHeader(Container);
 
             var post = MockFactory.CreatePost();
@@ -150,7 +147,6 @@ namespace Blog.IntegrationTests.Controllers
         public async Task When_UpdateCalledAndPostTitleNotProvided_Expect_ArgumentExceptionToBeThrown(string title)
         {
             //Arrange
-            var mediator = Container.Resolve<IMediator>();
             var controller = CreatePostControllerWithTokenHeader(Container);
 
             var post = MockFactory.CreatePost();
@@ -171,7 +167,6 @@ namespace Blog.IntegrationTests.Controllers
         public async Task When_UpdateCalledAndPostContentNotProvided_Expect_ArgumentExceptionToBeThrown(string content)
         {
             //Arrange
-            var mediator = Container.Resolve<IMediator>();
             var controller = CreatePostControllerWithTokenHeader(Container);
 
             var post = MockFactory.CreatePost();
@@ -189,7 +184,6 @@ namespace Blog.IntegrationTests.Controllers
         public void When_PostNotExistsAndDeleteCall_Expect_RecordNotFoundExceptionThrown()
         {
             //Arrange
-            var mediator = Container.Resolve<IMediator>();
             var controller = CreatePostControllerWithTokenHeader(Container);
 
             //Act + Assert
@@ -207,7 +201,6 @@ namespace Blog.IntegrationTests.Controllers
             await BlogContext.Set<Post>().AddAsync(post);
             await BlogContext.SaveChangesAsync();
 
-            var mediator = Container.Resolve<IMediator>();
             var controller = CreatePostControllerWithTokenHeader(Container);
 
             //Act
@@ -240,11 +233,11 @@ namespace Blog.IntegrationTests.Controllers
             Assert.That(retrievedPost.Comments.Length, Is.EqualTo(1));
         }
 
-        public static PostsController CreatePostControllerWithTokenHeader(IContainer container)
+        private static PostsController CreatePostControllerWithTokenHeader(IContainer container)
         {
             var mediator = container.Resolve<IMediator>();
             var controller = new PostsController(mediator);
-            string token = container.Resolve<IJwtService>()
+            var token = container.Resolve<IJwtService>()
                 .GenerateToken(new Claim("username", "John"))
                 .Value;
 
