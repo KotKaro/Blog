@@ -41,7 +41,7 @@ namespace Blog.IntegrationTests.Common
             return configurationBuilder;
         }
 
-        private ContainerBuilder CreateContainerBuilder(ConfigurationBuilder configurationBuilder)
+        private static ContainerBuilder CreateContainerBuilder(IConfigurationBuilder configurationBuilder)
         {
             var containerBuilder = new ContainerBuilder();
 
