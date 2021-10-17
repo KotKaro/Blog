@@ -1,0 +1,36 @@
+version: '3.7'
+
+volumes:
+  dbdata: {}
+  
+services:
+  blog-db:
+    image: mysql:8.0.21
+    container_name: mysql
+    volumes:
+      - dbdata:/var/lib/mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=#{MYSQL_ROOT_PASSWORD}#
+      - MYSQL_DATABASE=#{blog}#
+      - MYSQL_USER=#{MYSQL_USER}#
+      - MYSQL_PASSWORD=#{MYSQL_PASSWORD}#
+    networks:
+      - backend-net
+  blog-api:
+    ports:
+      - "80"
+      - "443"
+    networks:
+      - backend-net
+    image: karooloo/blogapi:latest
+    restart: always
+    depends_on:
+      - blog-db
+    environment:
+      - ConnectionStrings__SqlDatabase=Server=blog-db; Database=#{blog}#; Uid=#{MYSQL_USER}#; Pwd=#{MYSQL_PASSWORD}#;
+      - AuthContainer__SecretKey=#{SecretKey}#
+
+networks:
+  backend-net:
+    driver: bridge
