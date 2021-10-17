@@ -83,10 +83,10 @@ namespace Blog.IntegrationTests.Common
 
         private async Task<bool> DoesContainerAlreadyExistsAsync(CreateContainerParameters createContainerParameters)
         {
-            return (await GetExistingContainerWithName(createContainerParameters)) != null;
+            return await GetExistingContainerWithName(createContainerParameters) != null;
         }
 
-        private Progress<string> GetProgressWhichCancelTokenWhenLogsStop(CancellationTokenSource tokenSource)
+        private static Progress<string> GetProgressWhichCancelTokenWhenLogsStop(CancellationTokenSource tokenSource)
         {
             var counter = 0;
             var adjustedCounter = 0;

@@ -43,7 +43,7 @@ namespace Blog.IntegrationTests.Controllers
         }
 
         [Test]
-        public void When_UsernameOfUnexistingUserProvided_Expect_LoginExceptionThrown()
+        public void When_UsernameOfNotExistingUserProvided_Expect_LoginExceptionThrown()
         {
             Assert.ThrowsAsync<LoginException>(async () =>
             {

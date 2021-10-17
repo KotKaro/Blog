@@ -44,35 +44,29 @@ namespace Blog.API
                 c.IncludeXmlComments(xmlPath);
             });
 
-            services.AddMvc(options =>
-            {
-                options.EnableEndpointRouting = false;
-            });
+            services.AddMvc(options => { options.EnableEndpointRouting = false; });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-                    c.RoutePrefix = string.Empty;
-                });
+                app.UseDeveloperExceptionPage()
+                    .UseSwagger()
+                    .UseSwaggerUI(c =>
+                    {
+                        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                        c.RoutePrefix = string.Empty;
+                    });
             }
-            app.UseHttpsRedirection();
-            app.UseCors(CorsPolicyName);
 
-            app.UseRouting();
-
-            app.UseMiddleware<ErrorHandlingMiddleware>();
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints => endpoints.MapControllers());
-
-            app.UseMvc();
+            app.UseHttpsRedirection()
+                .UseCors(CorsPolicyName)
+                .UseRouting()
+                .UseMiddleware<ErrorHandlingMiddleware>()
+                .UseAuthorization()
+                .UseEndpoints(endpoints => endpoints.MapControllers())
+                .UseMvc();
         }
 
         // ReSharper disable once UnusedMember.Global

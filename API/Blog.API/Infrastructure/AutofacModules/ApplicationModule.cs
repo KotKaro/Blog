@@ -72,7 +72,7 @@ namespace Blog.API.Infrastructure.AutofacModules
         private void RegisterAuthContainerModel(ContainerBuilder containerBuilder)
         {
             var containerModel = new JwtContainerModel();
-            string key = _configuration.GetSection("AuthContainer")["SecretKey"];
+            var key = _configuration.GetSection("AuthContainer")["SecretKey"];
             if (!string.IsNullOrWhiteSpace(key))
             {
                 containerModel.SecretKey = key;
@@ -83,7 +83,7 @@ namespace Blog.API.Infrastructure.AutofacModules
                 .InstancePerLifetimeScope();
         }
 
-        private void RegisterSqlConnection(ContainerBuilder containerBuilder, string connectionString)
+        private static void RegisterSqlConnection(ContainerBuilder containerBuilder, string connectionString)
         {
             containerBuilder.Register(_ => new MySqlConnection(connectionString))
                 .As<IDbConnection>()
@@ -91,7 +91,7 @@ namespace Blog.API.Infrastructure.AutofacModules
                 .InstancePerLifetimeScope();
         }
 
-        private void RegisterUnitOfWork(ContainerBuilder containerBuilder)
+        private static void RegisterUnitOfWork(ContainerBuilder containerBuilder)
         {
             var dbContextType = typeof(BlogDbContext);
 
@@ -103,7 +103,7 @@ namespace Blog.API.Infrastructure.AutofacModules
                 .InstancePerLifetimeScope();
         }
 
-        private void RegisterDbContext<TDbContext>(ContainerBuilder containerBuilder) where TDbContext : DbContext
+        private static void RegisterDbContext<TDbContext>(ContainerBuilder containerBuilder) where TDbContext : DbContext
         {
             var serviceCollection = new ServiceCollection();
 

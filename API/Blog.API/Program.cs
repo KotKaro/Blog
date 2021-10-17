@@ -14,8 +14,7 @@ namespace Blog.API
             var host = CreateHostBuilder(args)
                 .Build();
 
-            var context = host.Services.GetService(typeof(BlogDbContext)) as BlogDbContext;
-            if (context != null)
+            if (host.Services.GetService(typeof(BlogDbContext)) is BlogDbContext context)
             {
                 var appliedMigrationsCount = context.Database.GetAppliedMigrations().Count();
                 var availableMigrationsCount = context.Database.GetMigrations().Count();

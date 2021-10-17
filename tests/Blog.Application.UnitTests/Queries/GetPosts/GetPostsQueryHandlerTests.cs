@@ -44,7 +44,7 @@ namespace Blog.Application.UnitTests.Queries.GetPosts
         }
 
         [Test]
-        public async Task When_HandledAndTenElementsFromFirstPageRquestedAndTenElementExists_Expect_TenElementsReturned()
+        public async Task When_HandledAndTenElementsFromFirstPageRequestedAndTenElementExists_Expect_TenElementsReturned()
         {
             //Arrange
             _postRepositoryMock.Setup(x => x.GetAllAsync(1, 10))

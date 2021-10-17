@@ -21,7 +21,7 @@ namespace Blog.Domain.UnitTests.Models.Aggregates.User
         }
 
         [Test]
-        public void When_TwoDiffrentUserDetailsCompared_Expect_ComparisionResultBeFalse()
+        public void When_TwoDifferentUserDetailsCompared_Expect_ComparisionResultBeFalse()
         {
             // Arrange
             var firstUserDetails = new UserDetails("test", "test");

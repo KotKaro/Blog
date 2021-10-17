@@ -23,7 +23,7 @@ namespace Blog.Infrastructure.Repositories
 
         public async Task<IEnumerable<Post>> GetAllAsync(int pageNumber = 1, int pageSize = 10)
         {
-            return GetQueryWithIncludes().Skip((pageNumber * pageSize) - pageSize)
+            return GetQueryWithIncludes().Skip(pageNumber * pageSize - pageSize)
                 .Take(pageSize);
         }
     }

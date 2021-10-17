@@ -4,17 +4,15 @@ namespace Blog.Infrastructure
 {
     public class BlogDbContext : DbContext
     {
+        public BlogDbContext(DbContextOptions<BlogDbContext> options) : base(options)
+        {
+        }
 
-    public BlogDbContext(DbContextOptions<BlogDbContext> options) : base(options)
-    {
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
-    }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
-
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(BlogDbContext).Assembly);
-    }
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(BlogDbContext).Assembly);
+        }
     }
 }
