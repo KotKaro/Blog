@@ -28,8 +28,8 @@ services:
     depends_on:
       - blog-db
     environment:
-      - ConnectionStrings__SqlDatabase=Server=blog-db; Database=#{MYSQL_DATABASE}#; Uid=#{MYSQL_USER}#; Pwd=#{MYSQL_PASSWORD}#;
-      - AuthContainer__SecretKey=#{SecretKey}#
+      - ConnectionStrings__SqlDatabase=Server="blog-db; Database=#{MYSQL_DATABASE}#; Uid=#{MYSQL_USER}#; Pwd=#{MYSQL_PASSWORD}#;"
+      - AuthContainer__SecretKey="#{SecretKey}#"
 
 networks:
   backend-net:
