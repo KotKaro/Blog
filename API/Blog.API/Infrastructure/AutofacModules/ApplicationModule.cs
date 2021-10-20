@@ -41,6 +41,7 @@ namespace Blog.API.Infrastructure.AutofacModules
             RegisterAutoMapper(containerBuilder);
             RegisterDbContext<BlogDbContext>(containerBuilder);
             RegisterAuthContainerModel(containerBuilder);
+            AddLogging(containerBuilder);
         }
 
         private static void RegisterAutoMapper(ContainerBuilder containerBuilder)
@@ -94,7 +95,6 @@ namespace Blog.API.Infrastructure.AutofacModules
         private static void RegisterUnitOfWork(ContainerBuilder containerBuilder)
         {
             var dbContextType = typeof(BlogDbContext);
-
             containerBuilder.Register(context => new EfUnitOfWork(
                     context.Resolve(dbContextType) as DbContext,
                     context.Resolve<IMediator>()
@@ -118,6 +118,13 @@ namespace Blog.API.Infrastructure.AutofacModules
                 });
             });
 
+            containerBuilder.Populate(serviceCollection);
+        }
+        
+        private static void AddLogging(ContainerBuilder containerBuilder)
+        {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddLogging();
             containerBuilder.Populate(serviceCollection);
         }
     }

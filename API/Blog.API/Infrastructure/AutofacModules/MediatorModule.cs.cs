@@ -36,6 +36,9 @@ namespace Blog.API.Infrastructure.AutofacModules
 
             builder.RegisterGeneric(typeof(ValidatorBehavior<,>))
                 .As(typeof(IPipelineBehavior<,>));
+            
+            builder.RegisterGeneric(typeof(LoggingBehaviour<,>))
+                .As(typeof(IPipelineBehavior<,>));
         }
     }
 }

@@ -23,13 +23,11 @@ namespace Blog.API.Behaviors
                 return await next();
             }
 
-            using (var transaction = await _unitOfWork.BeginTransactionAsync())
-            {
-                var response = await next();
-                await _unitOfWork.CommitTransactionAsync(transaction);
+            using var transaction = await _unitOfWork.BeginTransactionAsync();
+            var response = await next();
+            await _unitOfWork.CommitTransactionAsync(transaction);
 
-                return response;
-            }
+            return response;
         }
     }
 }
