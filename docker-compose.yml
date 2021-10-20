@@ -31,6 +31,7 @@ services:
       context: .
       dockerfile: ./API/Blog.API/Dockerfile
     environment:
+      - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__SqlDatabase=Server=blog-db; Database=blog; Uid=root; Pwd=toor;
     depends_on:
       - blog-db

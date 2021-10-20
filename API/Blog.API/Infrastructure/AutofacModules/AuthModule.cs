@@ -9,7 +9,7 @@ namespace Blog.API.Infrastructure.AutofacModules
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.Register(c =>
+            builder.Register(_ =>
                     new PasswordHasher(new OptionsWrapper<HashingOptions>(new HashingOptions { Iterations = 1 })))
                 .As<IPasswordHasher>()
                 .InstancePerLifetimeScope();

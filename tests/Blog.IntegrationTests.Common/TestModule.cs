@@ -16,7 +16,7 @@ namespace Blog.IntegrationTests.Common
 
             if (registration.Activator.LimitType.IsSubclassOf(typeof(DbContext)))
             {
-                registration.PipelineBuilding += (sender, pipeline) =>
+                registration.PipelineBuilding += (_, pipeline) =>
                 {
                     pipeline.Use(new DbContextMiddleware()); 
                 };

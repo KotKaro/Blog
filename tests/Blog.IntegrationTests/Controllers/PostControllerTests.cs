@@ -39,7 +39,7 @@ namespace Blog.IntegrationTests.Controllers
 
             await BlogContext.Set<Post>().AddRangeAsync
             (
-                Enumerable.Range(0, 10).Select(x => MockFactory.CreatePost())
+                Enumerable.Range(0, 10).Select(_ => MockFactory.CreatePost())
             );
 
             await BlogContext.SaveChangesAsync();
@@ -60,7 +60,7 @@ namespace Blog.IntegrationTests.Controllers
 
             await BlogContext.Set<Post>().AddRangeAsync
             (
-                Enumerable.Range(0, 20).Select(x => MockFactory.CreatePost())
+                Enumerable.Range(0, 20).Select(_ => MockFactory.CreatePost())
             );
 
             await BlogContext.SaveChangesAsync();
