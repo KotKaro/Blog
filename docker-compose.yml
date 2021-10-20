@@ -33,6 +33,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__SqlDatabase=Server=blog-db; Database=blog; Uid=root; Pwd=toor;
+      - blog__username=karol
+      - blog__password=test_test
     depends_on:
       - blog-db
   blog-spa:

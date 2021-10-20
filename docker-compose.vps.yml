@@ -19,8 +19,8 @@ services:
       - backend-net
   blog-api:
     ports:
-      - "80"
-      - "443"
+      - "80:80"
+      - "443:443"
     networks:
       - backend-net
     image: karooloo/blogapi:latest
@@ -29,7 +29,9 @@ services:
       - blog-db
     environment:
       - ConnectionStrings__SqlDatabase=Server=blog-db;Database=#{MYSQL_DATABASE}#;Uid=#{MYSQL_USER}#;Pwd=#{MYSQL_ROOT_PASSWORD}#;
-      - AuthContainer__SecretKey="#{SecretKey}#"
+      - AuthContainer__SecretKey=#{SecretKey}#
+      - blog__username=#{blog_username}#
+      - blog__password=#{blog_password}#
 
 networks:
   backend-net:

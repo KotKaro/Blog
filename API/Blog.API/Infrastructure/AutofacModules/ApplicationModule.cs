@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -15,8 +16,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MySql.Data.MySqlClient;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using MySqlConnector;
 using Module = Autofac.Module;
 
 namespace Blog.API.Infrastructure.AutofacModules
@@ -62,10 +62,10 @@ namespace Blog.API.Infrastructure.AutofacModules
             }));
 
             containerBuilder.Register(ctx =>
-            {
-                var mapperConfiguration = ctx.Resolve<MapperConfiguration>();
-                return mapperConfiguration.CreateMapper();
-            })
+                {
+                    var mapperConfiguration = ctx.Resolve<MapperConfiguration>();
+                    return mapperConfiguration.CreateMapper();
+                })
                 .As<IMapper>()
                 .SingleInstance();
         }
@@ -88,7 +88,7 @@ namespace Blog.API.Infrastructure.AutofacModules
         {
             containerBuilder.Register(_ => new MySqlConnection(connectionString))
                 .As<IDbConnection>()
-                .As<MySqlConnection>()
+                .As<DbConnection>()
                 .InstancePerLifetimeScope();
         }
 
@@ -103,24 +103,26 @@ namespace Blog.API.Infrastructure.AutofacModules
                 .InstancePerLifetimeScope();
         }
 
-        private static void RegisterDbContext<TDbContext>(ContainerBuilder containerBuilder) where TDbContext : DbContext
+        private static void RegisterDbContext<TDbContext>(ContainerBuilder containerBuilder)
+            where TDbContext : DbContext
         {
             var serviceCollection = new ServiceCollection();
 
             serviceCollection.AddDbContextPool<TDbContext>((provider, opts) =>
             {
-                opts.UseMySql(provider.GetService<MySqlConnection>(), sqlOptions =>
-                {
-                    sqlOptions.MigrationsAssembly(typeof(TDbContext).Assembly.GetName().Name);
-                    sqlOptions.MigrationsHistoryTable("__EFMigrationHistory");
-                    sqlOptions.ServerVersion(new Version(8, 0, 21), ServerType.MySql);
-                    sqlOptions.CharSetBehavior(CharSetBehavior.NeverAppend);
-                });
+                opts.UseMySql(
+                    provider.GetService<DbConnection>()!,
+                    new MySqlServerVersion(new Version(8, 0, 26)),
+                    sqlOptions =>
+                    {
+                        sqlOptions.MigrationsAssembly(typeof(TDbContext).Assembly.GetName().Name);
+                        sqlOptions.MigrationsHistoryTable("__EFMigrationHistory");
+                    });
             });
 
             containerBuilder.Populate(serviceCollection);
         }
-        
+
         private static void AddLogging(ContainerBuilder containerBuilder)
         {
             var serviceCollection = new ServiceCollection();

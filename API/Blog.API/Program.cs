@@ -1,8 +1,6 @@
-using System.Linq;
 using Autofac.Extensions.DependencyInjection;
-using Blog.Infrastructure;
+using Blog.API.Common;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -12,33 +10,21 @@ namespace Blog.API
     {
         public static void Main(string[] args)
         {
-            var host = CreateHostBuilder(args)
-                .Build();
-
-            if (host.Services.GetService(typeof(BlogDbContext)) is BlogDbContext context)
-            {
-                var appliedMigrationsCount = context.Database.GetAppliedMigrations().Count();
-                var availableMigrationsCount = context.Database.GetMigrations().Count();
-
-                if (appliedMigrationsCount != availableMigrationsCount)
-                {
-                    context.Database.Migrate();
-                }
-            }
-
-            host.Run();
+            CreateHostBuilder(args)
+                .Build()
+                .ApplyMigrations()
+                .CreateUserFromConfiguration()
+                .Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                }).ConfigureLogging(logging =>
-                {
-                    logging.ClearProviders();
-                    logging.AddConsole();
-                });
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); }).ConfigureLogging(
+                    logging =>
+                    {
+                        logging.ClearProviders();
+                        logging.AddConsole();
+                    });
     }
 }

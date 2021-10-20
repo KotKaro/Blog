@@ -44,10 +44,7 @@ namespace Blog.Application.Queries.Login
                 throw new LoginException();
             }
 
-            //TODO add rest of user claims
-
             var userNameClaim = _claimFactory.CreateUserClaim(user.UserDetails.Username);
-
             return _jwtService.GenerateToken(userNameClaim);
         }
     }

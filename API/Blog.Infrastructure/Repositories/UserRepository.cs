@@ -22,9 +22,14 @@ namespace Blog.Infrastructure.Repositories
 
         public Task<User> GetByUsernameAsync(string username)
         {
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                throw new ArgumentNullException(nameof(username));
+            }
+            
             return GetQueryWithIncludes()
                 .FirstOrDefaultAsync(x =>
-                    x.UserDetails.Username.Equals(username, StringComparison.CurrentCultureIgnoreCase));
+                    x.UserDetails.Username.ToLower() == username.ToLower());
         }
     }
 }
