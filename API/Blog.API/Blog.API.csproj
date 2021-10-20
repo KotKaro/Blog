@@ -36,6 +36,12 @@
     <ProjectReference Include="..\Blog.Infrastructure\Blog.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="StaticFiles\B0350567B1B1DBF7BA3EAA2D664E8CF1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="appsettings" /></VisualStudio></ProjectExtensions>
 
 

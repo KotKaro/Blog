@@ -8,7 +8,7 @@ services:
     image: mysql:8.0.21
     container_name: mysql
     volumes:
-      - dbdata:/var/lib/mysql
+      - /Users/karol/dbdata:/var/lib/mysql
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=toor
@@ -17,10 +17,12 @@ services:
       - MYSQL_PASSWORD=toor
     networks:
       - backend-net
+    ports:
+      - "3306:3306"
   blog-api:
     ports:
-      - "80"
-      - "443"
+      - "8000:80"
+      - "8001:443"
     networks:
       - backend-net
     image: ${DOCKER_REGISTRY-}blogapi
@@ -28,6 +30,8 @@ services:
     build:
       context: .
       dockerfile: ./API/Blog.API/Dockerfile
+    environment:
+      - ConnectionStrings__SqlDatabase=Server=blog-db; Database=blog; Uid=root; Pwd=toor;
     depends_on:
       - blog-db
   blog-spa:

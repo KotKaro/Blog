@@ -20,11 +20,11 @@
     "KKotBlogApi": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "weatherforecast",
+      "launchUrl": "swagger/index.html",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:443;http://localhost:80"
+      "applicationUrl": "http://localhost:8000;https://localhost:8001"
     },
     "Docker": {
       "commandName": "Docker",

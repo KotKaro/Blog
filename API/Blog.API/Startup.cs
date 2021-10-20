@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
@@ -27,7 +28,6 @@ namespace Blog.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
             services.AddCors(o => o.AddPolicy(CorsPolicyName, builder =>
             {
                 builder.AllowAnyOrigin()
@@ -37,8 +37,7 @@ namespace Blog.API
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MAS API", Version = "v1" });
-
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Blog API", Version = "v1" });
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
@@ -67,6 +66,12 @@ namespace Blog.API
                 .UseAuthorization()
                 .UseEndpoints(endpoints => endpoints.MapControllers())
                 .UseMvc();
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "StaticFiles")),
+                RequestPath = "/.well-known/pki-validation"
+            });
         }
 
         // ReSharper disable once UnusedMember.Global
