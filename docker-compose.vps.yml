@@ -34,6 +34,8 @@ services:
       - blog__password=#{blog_password}#
       - Kestrel__Certificates__Default__Path=#{CertPath}#
       - Kestrel__Certificates__Default__Password=#{CertPassword}#
+    volumes:
+      - /home/debian/blog/:/https/    
 
 networks:
   backend-net:
