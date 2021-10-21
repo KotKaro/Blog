@@ -34,7 +34,7 @@ services:
       - blog__password=#{blog_password}#
       - Kestrel__Certificates__Default__Path=#{CertPath}#
       - Kestrel__Certificates__Default__Password=#{CertPassword}#
-      - ASPNETCORE_URLS=https://+;http://+
+      - ASPNETCORE_URLS=https://+:443;http://+:80
     volumes:
       - /home/debian/blog/:/https/    
 
