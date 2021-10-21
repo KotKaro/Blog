@@ -32,6 +32,8 @@ services:
       - AuthContainer__SecretKey=#{SecretKey}#
       - blog__username=#{blog_username}#
       - blog__password=#{blog_password}#
+      - Kestrel__Certificates__Default__Path=#{CertPath}#
+      - Kestrel__Certificates__Default__Password=#{CertPassword}#
 
 networks:
   backend-net:

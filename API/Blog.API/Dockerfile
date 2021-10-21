@@ -9,6 +9,7 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 
 COPY ["API/Blog.API/Blog.API.csproj", "API/Blog.API/"]
+COPY ["API/Blog.API/StaticFiles", "API/Blog.API/StaticFiles/"]
 COPY ["API/Blog.Auth.Abstractions/Blog.Auth.Abstractions.csproj", "API/Blog.Auth.Abstractions/"]
 COPY ["API/Blog.Application/Blog.Application.csproj", "API/Blog.Application/"]
 COPY ["API/Blog.Domain/Blog.Domain.csproj", "API/Blog.Domain/"]
