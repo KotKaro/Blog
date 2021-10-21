@@ -67,7 +67,7 @@ export class AboutMeExperienceComponent {
 
   getWorkPlace(position: Position): string {
     if (!position) {
-      throw Error("No position provided!");
+      throw Error('No position provided!');
     }
 
     return [position.city, position.country]

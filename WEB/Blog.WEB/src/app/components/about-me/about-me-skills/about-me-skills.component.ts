@@ -10,26 +10,30 @@ export class AboutMeSkillsComponent {
     return [
       {
         name: '.NET/C#',
-        level: 70
+        level: 75
       },
       {
         name: 'SQL',
-        level: 50
+        level: 55
       },
       {
         name: 'DATA ANALYSIS',
-        level: 50
+        level: 55
       },
       {
         name: 'Angular',
-        level: 60
+        level: 70
       },
       {
         name: 'Azure',
-        level: 50
+        level: 60
       },
       {
         name: 'CSS',
+        level: 40
+      },
+      {
+        name: 'Python',
         level: 30
       },
     ];
@@ -43,11 +47,19 @@ export class AboutMeSkillsComponent {
       },
       {
         name: 'Docker',
-        level: 30
+        level: 40
       },
       {
         name: 'Java',
         level: 20
+      },
+      {
+        name: 'Domain Driven Design',
+        level: 40
+      },
+      {
+        name: 'Test Driven Development',
+        level: 50
       },
       {
         name: 'CREATIVITY',
