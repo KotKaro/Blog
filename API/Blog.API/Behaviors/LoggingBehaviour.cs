@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Blog.Domain.DataAccess;
 using MediatR;
@@ -19,14 +20,19 @@ namespace Blog.API.Behaviors
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            _logger.LogInformation("Starting request of type: {requestType}", nameof(TRequest));
+            _logger.LogInformation("Starting request of type: {requestType}", typeof(TRequest).Name);
             try
             {
                 return await next();
             }
+            catch (Exception ex)
+            {
+                _logger.LogError("Processing: {requestType} - throws exception: {message}", typeof(TRequest).Name, ex.Message);
+                throw;
+            }
             finally
             {
-                _logger.LogError("Processing: {requestType} - ended", nameof(TRequest));
+                _logger.LogInformation("Processing: {requestType} - ended", typeof(TRequest).Name);
             }
         }
     }
