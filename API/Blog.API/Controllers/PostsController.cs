@@ -39,17 +39,17 @@ namespace Blog.API.Controllers
         /// <summary>
         /// Creates post with specific details.
         /// </summary>
-        /// <param name="createCreatePostCommand">Command with all required data</param>
+        /// <param name="createCreatePost">Command with all required data</param>
         /// <returns>Created object</returns>
         [HttpPost]
         [SwaggerResponse(StatusCodes.Status201Created, "Created post")]
-        public async Task<PostDTO> Create(CreatePostCommand createCreatePostCommand)
+        public async Task<PostDTO> Create(CreatePost createCreatePost)
         {
             await CheckTokenAsync();
 
             var id = Guid.NewGuid();
-            createCreatePostCommand.Id = id;
-            await mediator.Send(createCreatePostCommand);
+            createCreatePost.Id = id;
+            await mediator.Send(createCreatePost);
 
             return await GetById(id);
         }

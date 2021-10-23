@@ -6,13 +6,13 @@ using Blog.Domain.Models.Aggregates.Post;
 using Blog.Domain.Repositories;
 using MediatR;
 
-namespace Blog.Application.Commands.CreatePost
+namespace Blog.Application.Commands.UpdatePost
 {
-    public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, Unit>
+    public class UpdatePostHandler : IRequestHandler<UpdatePostCommand, Unit>
     {
         private readonly IPostRepository _repository;
 
-        public UpdatePostCommandHandler(IPostRepository repository)
+        public UpdatePostHandler(IPostRepository repository)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }

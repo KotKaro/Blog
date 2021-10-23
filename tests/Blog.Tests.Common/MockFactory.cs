@@ -38,9 +38,9 @@ namespace Blog.Tests.Common
             return new Title(title);
         }
 
-        public static CreatePostCommand CreateCreatePostCommand(string title = "title", string content = "content")
+        public static CreatePost CreateCreatePostCommand(string title = "title", string content = "content")
         {
-            return new CreatePostCommand
+            return new CreatePost
             {
                 Id = Guid.NewGuid(),
                 Title = title,
@@ -76,14 +76,14 @@ namespace Blog.Tests.Common
             };
         }
 
-        public static CreateCommentCommand CreateCreateCommentCommand(
+        public static CreateComment CreateCreateCommentCommand(
             Guid? id = null,
             Guid? postId = null, 
             string creatorName = "John",
             string commentText = "Very good post!"
         )
         {
-            return new CreateCommentCommand
+            return new CreateComment
             {
                 Id = id ?? Guid.NewGuid(),
                 PostId = postId ?? Guid.NewGuid(),

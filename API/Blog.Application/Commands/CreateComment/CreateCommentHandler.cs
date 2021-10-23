@@ -8,16 +8,16 @@ using MediatR;
 
 namespace Blog.Application.Commands.CreateComment
 {
-    public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand, Unit>
+    public class CreateCommentHandler : IRequestHandler<CreateComment, Unit>
     {
         private readonly IPostRepository _repository;
 
-        public CreateCommentCommandHandler(IPostRepository repository)
+        public CreateCommentHandler(IPostRepository repository)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public async Task<Unit> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreateComment request, CancellationToken cancellationToken)
         {
             var post = await _repository.GetByIdAsync(request.PostId);
 

@@ -29,7 +29,7 @@
             <param name="query">Object with existing token</param>
             <returns>New token</returns>
         </member>
-        <member name="M:Blog.API.Controllers.CommentsController.CreateAsync(Blog.Application.Commands.CreateComment.CreateCommentCommand)">
+        <member name="M:Blog.API.Controllers.CommentsController.CreateAsync(Blog.Application.Commands.CreateComment.CreateComment)">
             <summary>
             Creates comment for post specified in command
             </summary>
@@ -50,11 +50,11 @@
             <param name="query">Query details, about page number and size</param>
             <returns>PostDTO objects</returns>
         </member>
-        <member name="M:Blog.API.Controllers.PostsController.Create(Blog.Application.Commands.UpdatePost.CreatePostCommand)">
+        <member name="M:Blog.API.Controllers.PostsController.Create(Blog.Application.Commands.UpdatePost.CreatePost)">
             <summary>
             Creates post with specific details.
             </summary>
-            <param name="createCreatePostCommand">Command with all required data</param>
+            <param name="createCreatePost">Command with all required data</param>
             <returns>Created object</returns>
         </member>
         <member name="M:Blog.API.Controllers.PostsController.GetById(System.Guid)">

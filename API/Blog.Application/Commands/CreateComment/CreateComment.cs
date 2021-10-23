@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Blog.Application.Commands.CreateComment
 {
-    public class CreateCommentCommand : IRequest
+    public class CreateComment : IRequest
     {
         [JsonIgnore]
         public Guid Id { get; set; }

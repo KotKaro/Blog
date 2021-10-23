@@ -2,7 +2,7 @@
 
 namespace Blog.Application.Commands.CheckToken
 {
-    public class CheckTokenCommand : IRequest
+    public class CheckToken : IRequest
     {
         public string Token { get; set; }
     }

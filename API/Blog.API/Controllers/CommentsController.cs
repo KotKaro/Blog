@@ -24,7 +24,7 @@ namespace Blog.API.Controllers
         /// <returns>PostDTO objects</returns>
         [HttpPost]
         [SwaggerResponse(HttpStatusCode.Created)]
-        public async Task<IActionResult> CreateAsync(CreateCommentCommand command)
+        public async Task<IActionResult> CreateAsync(CreateComment command)
         {
             command.Id = Guid.NewGuid();
             await mediator.Send(command);

@@ -1,9 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Blog.Domain.Models.Aggregates.Post;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Infrastructure
 {
     public class BlogDbContext : DbContext
     {
+        public DbSet<Post> Posts { get; set; }
+
         public BlogDbContext(DbContextOptions<BlogDbContext> options) : base(options)
         {
         }

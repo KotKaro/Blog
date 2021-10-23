@@ -18,7 +18,7 @@ namespace Blog.API.Controllers
 
         protected Task CheckTokenAsync()
         {
-            return mediator.Send(new CheckTokenCommand { Token = GetTokenHeaderValue() });
+            return mediator.Send(new CheckToken { Token = GetTokenHeaderValue() });
         }
 
         private string GetTokenHeaderValue()

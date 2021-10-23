@@ -23,7 +23,7 @@ namespace Blog.Application.Queries.GetPosts
         public async Task<PostDTO[]> Handle(GetPostsQuery request, CancellationToken cancellationToken)
         {
             return (await _postRepository.GetAllAsync(request.PageNumber, request.PageSize))
-                .Select(p => _mapper.Map<PostDTO>(p))
+                .Select(post => _mapper.Map<PostDTO>(post))
                 .ToArray();
         }
     }

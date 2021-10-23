@@ -16,13 +16,13 @@ namespace Blog.Application.UnitTests.Commands.CheckToken
         {
             //Arrange
             var jwtService = new JwtService(new JwtContainerModel());
-            var command = new CheckTokenCommand
+            var command = new Application.Commands.CheckToken.CheckToken
             {
                 Token = "test123"
             };
 
             //Act
-            var handler = new CheckTokenCommandHandler(jwtService);
+            var handler = new CheckTokenHandler(jwtService);
             
             //Assert
             Assert.ThrowsAsync<TokenInvalidException>(async () =>
@@ -36,13 +36,13 @@ namespace Blog.Application.UnitTests.Commands.CheckToken
         {
             //Arrange
             var jwtService = new JwtService(new JwtContainerModel());
-            var command = new CheckTokenCommand
+            var command = new Application.Commands.CheckToken.CheckToken
             {
                 Token = jwtService.GenerateToken(new Claim("username", "John")).Value
             };
 
             //Act
-            var handler = new CheckTokenCommandHandler(jwtService);
+            var handler = new CheckTokenHandler(jwtService);
 
             //Assert
             Assert.DoesNotThrowAsync(async () =>

@@ -21,13 +21,14 @@ namespace Blog.Infrastructure.Repositories
                 .Include(x => x.Comments);
         }
 
-        public async Task<IEnumerable<Post>> GetAllAsync(int pageNumber = 1, int pageSize = 10)
+        public Task<IEnumerable<Post>> GetAllAsync(int pageNumber = 1, int pageSize = 10)
         {
-            return GetQueryWithIncludes()
+            return Task.FromResult(GetQueryWithIncludes()
                 .OrderByDescending(x => x.CreationDate.Value)
                 .Skip(pageNumber * pageSize - pageSize)
                 .Take(pageSize)
-                .AsNoTracking();
+                .AsNoTracking()
+                .AsEnumerable());
         }
     }
 }

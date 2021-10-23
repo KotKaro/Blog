@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using NUnit.Framework;
 using System.Threading.Tasks;
-using Blog.Application.Commands.UpdatePost;
+using Blog.Application.Commands.CreatePost;
 using Blog.Domain.Models.Aggregates.Post;
 using Blog.Domain.Repositories;
 using Moq;
@@ -27,7 +27,7 @@ namespace Blog.Application.UnitTests.Commands.CreatePost
             Assert.Throws<ArgumentNullException>(() =>
             {
                 // ReSharper disable once ObjectCreationAsStatement
-                new CreatePostCommandHandler(null);
+                new CreatePostHandler(null);
             });
         }
 
@@ -35,7 +35,7 @@ namespace Blog.Application.UnitTests.Commands.CreatePost
         public void When_EmptyTitleProvided_Expect_ArgumentExceptionThrown()
         {
             // Arrange
-            var createPostCommandHandler = new CreatePostCommandHandler(_postRepositoryMock.Object);
+            var createPostCommandHandler = new CreatePostHandler(_postRepositoryMock.Object);
 
             //Act + Assert
             Assert.ThrowsAsync<ArgumentException>(async () =>
@@ -48,7 +48,7 @@ namespace Blog.Application.UnitTests.Commands.CreatePost
         public void When_EmptyContentProvided_Expect_ArgumentExceptionThrown()
         {
             // Arrange
-            var createPostCommandHandler = new CreatePostCommandHandler(_postRepositoryMock.Object);
+            var createPostCommandHandler = new CreatePostHandler(_postRepositoryMock.Object);
 
             //Act + Assert
             Assert.ThrowsAsync<ArgumentException>(async () =>
@@ -61,7 +61,7 @@ namespace Blog.Application.UnitTests.Commands.CreatePost
         public async Task When_CorrectCommandPassed_Expect_RepositoryAddAsyncToBeCalledWithProperValues()
         {
             // Arrange
-            var createPostCommandHandler = new CreatePostCommandHandler(_postRepositoryMock.Object);
+            var createPostCommandHandler = new CreatePostHandler(_postRepositoryMock.Object);
 
             //Act
             var command = MockFactory.CreateCreatePostCommand();

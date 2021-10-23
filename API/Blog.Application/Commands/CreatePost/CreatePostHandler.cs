@@ -5,18 +5,18 @@ using Blog.Domain.Models.Aggregates.Post;
 using Blog.Domain.Repositories;
 using MediatR;
 
-namespace Blog.Application.Commands.UpdatePost
+namespace Blog.Application.Commands.CreatePost
 {
-    public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Unit>
+    public class CreatePostHandler : IRequestHandler<CreatePost, Unit>
     {
         private readonly IPostRepository _repository;
 
-        public CreatePostCommandHandler(IPostRepository repository)
+        public CreatePostHandler(IPostRepository repository)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public async Task<Unit> Handle(CreatePostCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreatePost request, CancellationToken cancellationToken)
         {
             await _repository.AddAsync(
             new Post

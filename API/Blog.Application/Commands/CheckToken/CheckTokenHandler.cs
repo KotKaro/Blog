@@ -6,16 +6,16 @@ using MediatR;
 
 namespace Blog.Application.Commands.CheckToken
 {
-    public class CheckTokenCommandHandler : IRequestHandler<CheckTokenCommand, Unit>
+    public class CheckTokenHandler : IRequestHandler<CheckToken, Unit>
     {
         private readonly IJwtService _jwtService;
 
-        public CheckTokenCommandHandler(IJwtService jwtService)
+        public CheckTokenHandler(IJwtService jwtService)
         {
             _jwtService = jwtService;
         }
 
-        public Task<Unit> Handle(CheckTokenCommand request, CancellationToken cancellationToken)
+        public Task<Unit> Handle(CheckToken request, CancellationToken cancellationToken)
         {
             if (!_jwtService.IsTokenValid(new JwtToken(request?.Token)))
             {
