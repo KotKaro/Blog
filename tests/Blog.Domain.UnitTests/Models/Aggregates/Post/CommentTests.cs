@@ -1,13 +1,12 @@
 using System;
 using Blog.Domain.Models.Aggregates.Post;
-using NUnit.Framework;
+using Xunit;
 
 namespace Blog.Domain.UnitTests.Models.Aggregates.Post
 {
-    [TestFixture]
     public class CommentTests
     {
-        [Test]
+        [Fact]
         public void When_CommentCreatedWithoutCreator_Expect_ArgumentNullException()
         {
             // Act + Assert
@@ -18,7 +17,7 @@ namespace Blog.Domain.UnitTests.Models.Aggregates.Post
             });
         }
 
-        [Test]
+        [Fact]
         public void When_CommentCreatedWithoutContent_Expect_ArgumentNullException()
         {
             // Act + Assert

@@ -3,27 +3,25 @@ using System.Linq;
 using System.Threading;
 using Blog.Application.Queries.GetPosts;
 using Moq;
-using NUnit.Framework;
 using System.Threading.Tasks;
 using Blog.Domain.Repositories;
 using Blog.Tests.Common;
+using FluentAssertions;
+using Xunit;
 using MockFactory = Blog.Tests.Common.MockFactory;
 
 namespace Blog.Application.UnitTests.Queries.GetPosts
 {
-    [TestFixture]
     public class GetPostsHandlerTests
     {
-        private Mock<IPostRepository> _postRepositoryMock;
+        private readonly Mock<IPostRepository> _postRepositoryMock;
 
-
-        [SetUp]
-        public void SetUp()
+        public GetPostsHandlerTests()
         {
             _postRepositoryMock = new Mock<IPostRepository>();
         }
 
-        [Test]
+        [Fact]
         public void When_GetPostQueryHandlerConstructedWithoutPostRepository_Expect_ArgumentNullExceptionThrown()
         {
             Assert.Throws<ArgumentNullException>(() =>
@@ -33,7 +31,7 @@ namespace Blog.Application.UnitTests.Queries.GetPosts
             });
         }
 
-        [Test]
+        [Fact]
         public void When_GetPostQueryHandlerConstructedWithoutMapper_Expect_ArgumentNullExceptionThrown()
         {
             Assert.Throws<ArgumentNullException>(() =>
@@ -43,7 +41,7 @@ namespace Blog.Application.UnitTests.Queries.GetPosts
             });
         }
 
-        [Test]
+        [Fact]
         public async Task When_HandledAndTenElementsFromFirstPageRequestedAndTenElementExists_Expect_TenElementsReturned()
         {
             //Arrange
@@ -56,7 +54,7 @@ namespace Blog.Application.UnitTests.Queries.GetPosts
             var result = await sut.Handle(MockFactory.CreateGetPostsQuery(), CancellationToken.None);
 
             //Assert
-            Assert.That(result.Length, Is.EqualTo(10));
+            result.Length.Should().Be(10);
         }
     }
 }

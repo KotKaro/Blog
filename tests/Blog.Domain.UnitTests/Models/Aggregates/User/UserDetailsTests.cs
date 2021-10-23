@@ -1,12 +1,12 @@
 using Blog.Domain.Models.Aggregates.User;
-using NUnit.Framework;
+using FluentAssertions;
+using Xunit;
 
 namespace Blog.Domain.UnitTests.Models.Aggregates.User
 {
-    [TestFixture]
     public class UserDetailsTests
     {
-        [Test]
+        [Fact]
         public void When_TwoSameUserDetailsCompared_Expect_ComparisionResultBeTrue()
         {
             // Arrange
@@ -17,10 +17,10 @@ namespace Blog.Domain.UnitTests.Models.Aggregates.User
             var result = firstUserDetails.Equals(secondUserDetails);
 
             // Assert
-            Assert.IsTrue(result);
+            result.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void When_TwoDifferentUserDetailsCompared_Expect_ComparisionResultBeFalse()
         {
             // Arrange
@@ -31,7 +31,7 @@ namespace Blog.Domain.UnitTests.Models.Aggregates.User
             var result = firstUserDetails.Equals(secondUserDetails);
 
             // Assert
-            Assert.IsFalse(result);
+            result.Should().BeFalse();
         }
     }
 }

@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Autofac;
 using Blog.API.Controllers;
 using Blog.Application.Mappers.Exceptions;
 using Blog.Auth.Abstractions;
+using Blog.Domain.DataAccess;
 using Blog.Domain.Exceptions;
 using Blog.Domain.Models.Aggregates.Post;
+using Blog.Infrastructure;
 using Blog.IntegrationTests.Common;
+using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,107 +20,108 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 using MockFactory = Blog.Tests.Common.MockFactory;
 
 namespace Blog.IntegrationTests.Controllers
 {
-    [TestFixture]
-    public class CommentsControllerTests : IntegrationTestBase
+    [Collection(nameof(BlogTestCollection))]
+    public class CommentsControllerTests
     {
-        private CommentsController _commentsController;
+        private readonly CommentsController _commentsController;
+        private readonly BlogDbContext _blogDbContext;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMediator _mediator;
 
-        [OneTimeSetUp]
-        public void OneTimeSetUp()
+        public CommentsControllerTests(BlogApplicationFactory factory)
         {
-            _commentsController = CreateCommentsControllerWithTokenHeader(Container);
+            _blogDbContext = (BlogDbContext)factory.Services.GetService(typeof(BlogDbContext));
+            _unitOfWork = (IUnitOfWork)factory.Services.GetService(typeof(IUnitOfWork));
+            _mediator = (IMediator)factory.Services.GetService(typeof(IMediator));
+            
+            _commentsController = CreateCommentsControllerWithTokenHeader(factory.Services);
+            _blogDbContext!.Set<Comment>().RemoveRange(_blogDbContext.Set<Comment>());
+            _blogDbContext.Set<Post>().RemoveRange(_blogDbContext.Set<Post>());
         }
 
-        [SetUp]
-        public void SetUp()
-        {
-            BlogContext.Set<Comment>().RemoveRange(BlogContext.Set<Comment>());
-            BlogContext.Set<Post>().RemoveRange(BlogContext.Set<Post>());
-        }
 
-        [Test]
-        public void When_CommentCreatedAndPostDoesNotExists_Expect_RecordNotFoundExceptionThrown()
+        [Fact]
+        public async Task When_CommentCreatedAndPostDoesNotExists_Expect_RecordNotFoundExceptionThrown()
         {
             // Act + Assert
-            Assert.ThrowsAsync<RecordNotFoundException>(async () =>
+            await Assert.ThrowsAsync<RecordNotFoundException>(async () =>
             {
                 await _commentsController.CreateAsync(MockFactory.CreateCreateCommentCommand());
             });
         }
 
-        [Test]
+        [Fact]
         public async Task When_CommentCreatedAndPostExist_Expect_PostToBeAdded()
         {
             // Arrange
-            await BlogContext.Set<Post>().AddAsync(MockFactory.CreatePost());
-            await BlogContext.SaveChangesAsync();
-            var post = await BlogContext.Set<Post>().FirstOrDefaultAsync();
+            await _blogDbContext.Set<Post>().AddAsync(MockFactory.CreatePost());
+            await _blogDbContext.SaveChangesAsync();
+            var post = await _blogDbContext.Set<Post>().FirstOrDefaultAsync();
 
             // Act
             await _commentsController.CreateAsync(MockFactory.CreateCreateCommentCommand(postId: post.Id));
-            await UnitOfWork.SaveEntitiesAsync();
+            await _unitOfWork.SaveEntitiesAsync();
 
             // Assert
-            Assert.That(post.Comments.Count, Is.EqualTo(1));
+            post.Comments.Count.Should().Be(1);
         }
 
-        [Test]
-        public void When_CommentDeleteCalledAndCommentDoesNotExists_Expect_RecordNotFoundExceptionThrown()
+        [Fact]
+        public async Task When_CommentDeleteCalledAndCommentDoesNotExists_Expect_RecordNotFoundExceptionThrown()
         {
             // Act + Assert
-            Assert.ThrowsAsync<RecordNotFoundException>(async () =>
+            await Assert.ThrowsAsync<RecordNotFoundException>(async () =>
             {
                 await _commentsController.DeleteAsync(Guid.NewGuid());
             });
         }
 
-        [Test]
+        [Fact]
         public async Task When_CommentDeleteCalledAndCommentExist_Expect_PostToBeDeleted()
         {
             // Arrange
-            await BlogContext.Set<Post>().AddAsync(MockFactory.CreatePost());
-            await BlogContext.SaveChangesAsync();
-            var post = await BlogContext.Set<Post>().FirstOrDefaultAsync();
+            await _blogDbContext.Set<Post>().AddAsync(MockFactory.CreatePost());
+            await _blogDbContext.SaveChangesAsync();
+            var post = await _blogDbContext.Set<Post>().FirstOrDefaultAsync();
             await _commentsController.CreateAsync(MockFactory.CreateCreateCommentCommand(postId: post.Id));
-            await UnitOfWork.SaveEntitiesAsync();
+            await _unitOfWork.SaveEntitiesAsync();
 
             // Act
             await _commentsController.DeleteAsync(post.Comments.First().Id);
-            await UnitOfWork.SaveEntitiesAsync();
+            await _unitOfWork.SaveEntitiesAsync();
 
             // Assert
-            Assert.That(post.Comments.Count, Is.EqualTo(0));
+            post.Comments.Count.Should().Be(0);
         }
 
-        [Test]
+        [Fact]
         public async Task When_CommentDeleteCalledAndTokenNotProvided_Expect_TokenInvalidExceptionThrown()
         {
             // Arrange
-            await BlogContext.Set<Post>().AddAsync(MockFactory.CreatePost());
-            await BlogContext.SaveChangesAsync();
-            var post = await BlogContext.Set<Post>().FirstOrDefaultAsync();
-            var controller = new CommentsController(Container.Resolve<IMediator>());
+            await _blogDbContext.Set<Post>().AddAsync(MockFactory.CreatePost());
+            await _blogDbContext.SaveChangesAsync();
+            var post = await _blogDbContext.Set<Post>().FirstOrDefaultAsync();
+            var controller = new CommentsController(_mediator);
             await controller.CreateAsync(MockFactory.CreateCreateCommentCommand(postId: post.Id));
-            await UnitOfWork.SaveEntitiesAsync();
+            await _unitOfWork.SaveEntitiesAsync();
 
             // Act + Assert
-            Assert.ThrowsAsync<TokenInvalidException>(async () =>
+            await Assert.ThrowsAsync<TokenInvalidException>(async () =>
             {
                 await controller.DeleteAsync(post.Comments.First().Id);
             });
         }
 
-        public static CommentsController CreateCommentsControllerWithTokenHeader(IContainer container)
+        private CommentsController CreateCommentsControllerWithTokenHeader(IServiceProvider container)
         {
-            var mediator = container.Resolve<IMediator>();
-            var controller = new CommentsController(mediator);
-            var token = container.Resolve<IJwtService>()
-                .GenerateToken(new Claim("username", "John"))
+            var controller = new CommentsController(_mediator);
+            var token = ((IJwtService)container.GetService(typeof(IJwtService)))
+                !.GenerateToken(new Claim("username", "John"))
                 .Value;
 
             var httpContextMock = new Mock<HttpContext>();

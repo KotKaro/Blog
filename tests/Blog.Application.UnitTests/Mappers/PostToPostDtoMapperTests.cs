@@ -1,14 +1,14 @@
 using Blog.Application.DTO;
 using Blog.Tests.Common;
-using NUnit.Framework;
+using FluentAssertions;
+using Xunit;
 using MockFactory = Blog.Tests.Common.MockFactory;
 
 namespace Blog.Application.UnitTests.Mappers
 {
-    [TestFixture]
     public class PostToPostDtoMapperTests
     {
-        [Test]
+        [Fact]
         public void When_PostMappedToPostDto_Expect_AllPropertiesSet()
         {
             //Arrange
@@ -19,10 +19,10 @@ namespace Blog.Application.UnitTests.Mappers
             var postDto = mapper.Map<PostDTO>(post);
 
             //Assert
-            Assert.AreEqual(post.Id, postDto.Id);
-            Assert.AreEqual(post.Title.Value, postDto.Title);
-            Assert.AreEqual(post.Content.Value, postDto.Content);
-            Assert.AreEqual(post.CreationDate.Value, postDto.CreationDate);
+            post.Id.Should().Be(postDto.Id);
+            post.Title.Value.Should().Be(postDto.Title);
+            post.Content.Value.Should().Be(postDto.Content);
+            post.CreationDate.Value.Should().Be(postDto.CreationDate);
         }
     }
 }

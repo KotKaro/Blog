@@ -1,12 +1,12 @@
+using FluentAssertions;
 using Microsoft.Extensions.Options;
-using NUnit.Framework;
+using Xunit;
 
 namespace Blog.Auth.UnitTests
 {
-    [TestFixture]
     public class PasswordHasherTests
     {
-        [Test]
+        [Fact]
         public void When_PasswordHashGenerated_Expect_PasswordHashCheckReturnsTrue()
         {
             //Arrange
@@ -19,7 +19,7 @@ namespace Blog.Auth.UnitTests
             var passOne = hasher.Hash("test");
             
             //Arrange
-            Assert.IsTrue(hasher.Check(passOne, "test").Verified);
+            hasher.Check(passOne, "test").Verified.Should().BeTrue();
         }
     }
 }

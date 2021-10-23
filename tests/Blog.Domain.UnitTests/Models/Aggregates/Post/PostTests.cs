@@ -1,14 +1,14 @@
 using Blog.Domain.Models.Aggregates.Post;
-using NUnit.Framework;
 using System;
 using Blog.Tests.Common;
+using FluentAssertions;
+using Xunit;
 
 namespace Blog.Domain.UnitTests.Models.Aggregates.Post
 {
-    [TestFixture]
     public class PostTests
     {
-        [Test]
+        [Fact]
         public void When_PostCreated_Expect_TodayDateToBeSetAsCreationDate()
         {
             //Arrange + Act
@@ -19,10 +19,10 @@ namespace Blog.Domain.UnitTests.Models.Aggregates.Post
             );
 
             //Assert
-            Assert.AreEqual(DateTime.Today, post.CreationDate.Value);
+            post.CreationDate.Value.Should().Be(DateTime.Today);
         }
 
-        [Test]
+        [Fact]
         public void When_AddedPostIsNull_Expect_ArgumentNullExceptionThrown()
         {
             //Arrange
@@ -36,7 +36,7 @@ namespace Blog.Domain.UnitTests.Models.Aggregates.Post
 
         }
 
-        [Test]
+        [Fact]
         public void When_AddPostCalled_Expect_PostGotOneComment()
         {
             //Arrange
@@ -46,7 +46,7 @@ namespace Blog.Domain.UnitTests.Models.Aggregates.Post
             post.AddComment(MockFactory.CreatComment());
 
             //Assert
-            Assert.That(post.Comments.Count, Is.EqualTo(1));
+            post.Comments.Count.Should().Be(1);
         }
     }
 }

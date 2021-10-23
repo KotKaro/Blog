@@ -1,28 +1,27 @@
 using System;
 using System.Threading;
-using NUnit.Framework;
 using System.Threading.Tasks;
 using Blog.Application.Queries.GetPostById;
 using Blog.Domain.Exceptions;
 using Blog.Domain.Repositories;
 using Blog.Tests.Common;
+using FluentAssertions;
 using Moq;
+using Xunit;
 using MockFactory = Blog.Tests.Common.MockFactory;
 
 namespace Blog.Application.UnitTests.Commands.GetPostById
 {
-    [TestFixture]
     public class GetPostByIdHandlerTests
     {
         private Mock<IPostRepository> _postRepositoryMock;
 
-        [SetUp]
-        public void SetUp()
+        public GetPostByIdHandlerTests()
         {
             _postRepositoryMock = new Mock<IPostRepository>();
         }
 
-        [Test]
+        [Fact]
         public void When_HandlerConstructedWithoutPostRepository_Expect_ArgumentNullExceptionThrown()
         {
             Assert.Throws<ArgumentNullException>(() =>
@@ -32,7 +31,7 @@ namespace Blog.Application.UnitTests.Commands.GetPostById
             });
         }
 
-        [Test]
+        [Fact]
         public void When_HandlerConstructedWithoutMapper_Expect_ArgumentNullExceptionThrown()
         {
             Assert.Throws<ArgumentNullException>(() =>
@@ -42,20 +41,20 @@ namespace Blog.Application.UnitTests.Commands.GetPostById
             });
         }
 
-        [Test]
-        public void When_PostWithSpecificIdDoesNotExistsInRepository_Expect_RecordNotFoundExceptionThrown()
+        [Fact]
+        public async Task When_PostWithSpecificIdDoesNotExistsInRepository_Expect_RecordNotFoundExceptionThrown()
         {
             // Arrange
             var handler = new GetPostByIdQueryHandler(_postRepositoryMock.Object, Mapper.GetInstance());
 
             // Act + Assert
-            Assert.ThrowsAsync<RecordNotFoundException>(async () =>
+            await Assert.ThrowsAsync<RecordNotFoundException>(async () =>
             {
                 await handler.Handle(MockFactory.CreateGetByIdQuery(), CancellationToken.None);
             });
         }
 
-        [Test]
+        [Fact]
         public async Task When_PostWithSpecificIdExistsInRepository_Expect_PostDtoBeenReturned()
         {
             // Arrange
@@ -67,8 +66,7 @@ namespace Blog.Application.UnitTests.Commands.GetPostById
             // Act + Assert
             var result = await handler.Handle(MockFactory.CreateGetByIdQuery(id), CancellationToken.None);
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.Id, Is.EqualTo(id));
+            result.Id.Should().Be(id);
         }
     }
 }

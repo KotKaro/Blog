@@ -1,16 +1,15 @@
 using System;
 using Blog.Domain.Models.Aggregates.Post;
-using NUnit.Framework;
+using Xunit;
 
 namespace Blog.Domain.UnitTests.Models.Aggregates.Post
 {
-    [TestFixture]
     public class CreatorTests
     {
-        [Test]
-        [TestCase("")]
-        [TestCase(" ")]
-        [TestCase(null)]
+        [Theory]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData(null)]
         public void When_CreatorCreatedWithWrongName_Expect_ArgumentExceptionThrown(string text)
         {
             Assert.Throws<ArgumentException>(() =>
