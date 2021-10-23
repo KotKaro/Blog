@@ -50,7 +50,7 @@
             <param name="query">Query details, about page number and size</param>
             <returns>PostDTO objects</returns>
         </member>
-        <member name="M:Blog.API.Controllers.PostsController.Create(Blog.Application.Commands.UpdatePost.CreatePost)">
+        <member name="M:Blog.API.Controllers.PostsController.Create(Blog.Application.Commands.CreatePost.CreatePost)">
             <summary>
             Creates post with specific details.
             </summary>
@@ -64,7 +64,7 @@
             <param name="id">ID of post to retrieve</param>
             <returns>PostDTO object</returns>
         </member>
-        <member name="M:Blog.API.Controllers.PostsController.Update(Blog.Application.Commands.CreatePost.UpdatePostCommand)">
+        <member name="M:Blog.API.Controllers.PostsController.Update(Blog.Application.Commands.UpdatePost.UpdatePostCommand)">
             <summary>
             Updates post specified by command ID
             </summary>

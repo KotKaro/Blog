@@ -12,7 +12,7 @@ using MockFactory = Blog.Tests.Common.MockFactory;
 namespace Blog.Application.UnitTests.Commands.GetPostById
 {
     [TestFixture]
-    public class GetPostByIdCommandHandlerTests
+    public class GetPostByIdHandlerTests
     {
         private Mock<IPostRepository> _postRepositoryMock;
 

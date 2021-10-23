@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace Blog.Application.UnitTests.Commands.CheckToken
 {
     [TestFixture]
-    public class CheckTokenCommandHandlerTests
+    public class CheckTokenHandlerTests
     {
         [Test]
         public void When_InvalidTokenProvided_Expect_LoginExceptionThrown()

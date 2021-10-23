@@ -11,7 +11,7 @@ using MockFactory = Blog.Tests.Common.MockFactory;
 namespace Blog.Application.UnitTests.Commands.CreatePost
 {
     [TestFixture]
-    public class CreatePostCommandHandlerTests
+    public class CreatePostHandlerTests
     {
         private Mock<IPostRepository> _postRepositoryMock;
 
