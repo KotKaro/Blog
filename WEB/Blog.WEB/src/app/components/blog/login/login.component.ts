@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
-import { AuthService } from 'src/app/services/auth.service';
-import { BlogRouterService } from 'src/app/services/blog-router.service';
+import {Component} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ToastrService} from 'ngx-toastr';
+import {AuthService} from 'src/app/services/auth.service';
+import {BlogRouterService} from 'src/app/services/blog-router.service';
 
 @Component({
   selector: 'app-login',
@@ -16,21 +16,31 @@ export class LoginComponent {
   mouseoverLogin: boolean;
   loginInvalid = false;
 
-  constructor(private blogRouter: BlogRouterService, private authService: AuthService, private toastrService: ToastrService) {
+  loginForm: FormGroup;
 
+  constructor(
+    private blogRouter: BlogRouterService,
+    private authService: AuthService,
+    private toastrService: ToastrService,
+    private formBuilder: FormBuilder) {
+    this.loginForm = formBuilder.group({
+      username: ['', [Validators.required]],
+      password: ['', [Validators.required]]
+    });
   }
 
   cancel(): void {
     this.blogRouter.goToBlog();
   }
 
-  login(formValues: any): void {
-    if (!formValues?.password || !formValues?.userName) {
+  login(): void {
+    const formValues = this.loginForm.value;
+    if (!formValues?.password || !formValues?.username) {
       return;
     }
 
     this.authService
-      .login(formValues.userName, formValues.password)
+      .login(formValues.username, formValues.password)
       .subscribe(response => {
         if (!response) {
           this.loginInvalid = true;
@@ -41,11 +51,11 @@ export class LoginComponent {
       });
   }
 
-  isValidUserName(loginForm: NgForm, mouseoverLogin: boolean): boolean {
-    return loginForm.controls.userName?.invalid && (loginForm.controls.userName?.touched || mouseoverLogin);
+  isValidUserName(mouseoverLogin: boolean): boolean {
+    return this.loginForm.controls.username?.invalid && (this.loginForm.controls.username?.touched || mouseoverLogin);
   }
 
-  isValidPassword(loginForm: NgForm, mouseoverLogin): boolean {
-    return loginForm.controls.password?.invalid && (loginForm.controls.password?.touched || mouseoverLogin);
+  isValidPassword(mouseoverLogin): boolean {
+    return this.loginForm.controls.password?.invalid && (this.loginForm.controls.password?.touched || mouseoverLogin);
   }
 }
