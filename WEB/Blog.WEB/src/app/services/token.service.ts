@@ -1,20 +1,20 @@
-import { Injectable } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
+import {Injectable} from '@angular/core';
+import {CookieService} from 'ngx-cookie-service';
 
 @Injectable()
 export class TokenService {
 
-    private tokenCookieName = 'token';
+  private tokenCookieName = 'token';
 
-    constructor(private cookieService: CookieService) {
+  constructor(private cookieService: CookieService) {
 
-    }
+  }
 
-    setToken(token: string): void {
-        this.cookieService.set(this.tokenCookieName, token);
-    }
+  setToken(token: string): void {
+    this.cookieService.set(this.tokenCookieName, token);
+  }
 
-    getToken(): string {
-        return this.cookieService.get(this.tokenCookieName);
-    }
+  getToken(): string {
+    return this.cookieService.get(this.tokenCookieName);
+  }
 }
