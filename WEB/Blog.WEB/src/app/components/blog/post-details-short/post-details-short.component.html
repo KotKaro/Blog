@@ -1,15 +1,17 @@
 <div class="post-details">
-    <div class="text-centered">
-        <h3 [routerLink]="['/post/' + post.id]" class="cornflowerblue-text">{{post.title}}</h3>
-        <small class="light-grey-text">{{post.creationDate | date: 'dd LLLL yyyy'}}</small>
-    </div>
+  <div class="text-centered">
+    <h3 [routerLink]="['/post/' + post.id]" class="cornflowerblue-text">{{post.title}}</h3>
+    <small class="light-grey-text">{{post.creationDate | date: 'dd LLLL yyyy'}}</small>
+  </div>
+  <div class="fadeout">
     <div [innerHTML]="post.content">
     </div>
+  </div>
 </div>
 <div class="d-flex justify-content-center">
-    <button *ngIf="isShowMoreButtonVisible()" class="btn btn-dark" [routerLink]="'/post/' + post.id">Show more</button>
+  <button *ngIf="isShowMoreButtonVisible()" class="btn btn-dark" [routerLink]="'/post/' + post.id">Show more</button>
 </div>
 <div class="d-flex justify-content-center" *ngIf="post.comments.length">
-    <small class="light-grey-text">Comments: {{ post.comments.length }}</small>
+  <small class="light-grey-text">Comments: {{ post.comments.length }}</small>
 </div>
 <hr>
