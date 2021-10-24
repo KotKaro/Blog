@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component} from '@angular/core';
+import { ActivatedRoute} from '@angular/router';
 import { Comment } from 'src/app/models/comment.model';
 import { Post } from 'src/app/models/post.model';
 import { AuthService } from 'src/app/services/auth.service';
@@ -13,7 +13,7 @@ import { PostService } from 'src/app/services/post.service';
   styleUrls: ['./post-details.component.scss']
 })
 export class PostDetailsComponent {
-  post: Post = { content: '', title: '', id: '', creationDate: new Date(), comments: [] };
+  post: Post = { content: '', title: '', id: '', creationDate: new Date(), comments: [] } as Post;
 
   constructor(
     private route: ActivatedRoute,
@@ -33,12 +33,8 @@ export class PostDetailsComponent {
     return this.route.snapshot.paramMap.get('id');
   }
 
-  isAuthenticated(): boolean {
-    return this.authService.isAuthenticated();
-  }
-
   showDialog(): void {
-    this.confirmDialogService.confirmThis("Are you sure to delete?",
+    this.confirmDialogService.confirmThis('Are you sure to delete?',
       () => {
         this.removePost();
       }, () => {
