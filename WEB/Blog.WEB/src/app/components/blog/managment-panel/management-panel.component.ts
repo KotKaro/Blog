@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { BlogRouterService } from 'src/app/services/blog-router.service';
 

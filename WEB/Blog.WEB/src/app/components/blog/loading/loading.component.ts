@@ -1,6 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { timeout } from 'rxjs/operators';
 import { LoadingService } from 'src/app/services/loading.service';
 
 @Component({

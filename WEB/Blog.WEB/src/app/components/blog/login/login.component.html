@@ -16,7 +16,7 @@
                     <label for="password">Password:</label>
                     <small *ngIf="isValidPassword(loginForm, mouseoverLogin)">Required</small>
                 </div>
-                <input id="password" type="password" class="form-control" [ngClass]="{'is-invalid': isValidPassword(loginForm, mouseoverLogin)}" placeholder="Password..." (ngModel)="password" name="password" required />
+                <input id="password" type="password" class="form-control" [ngClass]="{'is-invalid': isValidPassword(loginForm, mouseoverLogin)}" placeholder="Password..." q(ngModel)="password" name="password" required />
             </div>
 
             <div style="padding-top: 1em;">

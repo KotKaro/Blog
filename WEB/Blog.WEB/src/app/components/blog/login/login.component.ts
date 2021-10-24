@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { BlogRouterService } from 'src/app/services/blog-router.service';
