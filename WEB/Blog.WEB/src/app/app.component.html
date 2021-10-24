@@ -1,9 +1,9 @@
 <app-nav-bar></app-nav-bar>
 <div class="container">
     <div class="separator"></div>
-    <div class="header-style">
+    <div class="header-style" (click)="onHeaderClick()">
         <h1 #pageHeader>Blog</h1>
-        <img src="assets/keyboard.svg" class="image-style" />
+        <img src="assets/keyboard.svg" class="image-style" alt="Keyboard logo" />
     </div>
     <hr />
     <router-outlet></router-outlet>

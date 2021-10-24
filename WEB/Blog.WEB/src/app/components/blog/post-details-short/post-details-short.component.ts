@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input } from '@angular/core';
+import { Component, ElementRef, Input } from '@angular/core';
 import { Post } from 'src/app/models/post.model';
 
 @Component({
@@ -8,8 +8,6 @@ import { Post } from 'src/app/models/post.model';
 })
 export class PostDetailsShortComponent {
   @Input() post: Post;
-
-  showShowMoreButton: boolean;
 
   constructor(private element: ElementRef) {
 
