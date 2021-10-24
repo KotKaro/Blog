@@ -1,12 +1,13 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {Skill} from '../models/skill.model';
 
 @Component({
   selector: 'app-about-me-skills',
   templateUrl: './about-me-skills.component.html',
-  styleUrls: ['./about-me-skills.component.scss']
+  styleUrls: ['../about-me.component.scss']
 })
 export class AboutMeSkillsComponent {
-  getLeftSkills(): any[] {
+  get leftSkills(): Skill[] {
     return [
       {
         name: '.NET/C#',
@@ -39,7 +40,7 @@ export class AboutMeSkillsComponent {
     ];
   }
 
-  getRightSkills(): any[] {
+  get rightSkills(): Skill[] {
     return [
       {
         name: 'HTML',

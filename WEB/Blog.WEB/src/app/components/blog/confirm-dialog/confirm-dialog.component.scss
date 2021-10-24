@@ -1,4 +1,4 @@
-@import "../../app.component.scss";
+@import "../../../app.component";
 .custom-alert {
     width: 300px;
 }
@@ -19,7 +19,7 @@
 
 .confirm-button {
     text-align: center;
-    margin: 15px 0px 15px 0px;
+    margin: 15px 0 15px 0;
 }
 
 .btn {

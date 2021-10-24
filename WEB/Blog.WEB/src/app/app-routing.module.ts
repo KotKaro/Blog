@@ -1,15 +1,17 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { AuthenticatedActivator } from './activators/authenticated.activator';
-import { AboutMeComponent } from './components/about-me/about-me.component';
-import { LoginComponent } from './components/login/login.component';
-import { ManagementPanelComponent } from './components/managment-panel/management-panel.component';
-import { PostCreateComponent } from './components/post-create/post-create.component';
-import { PostDetailsComponent } from './components/post-details/post-details.component';
-import { PostEditComponent } from './components/post-edit/post-edit.component';
-import { PostListComponent } from './components/post-list/post-list.component';
-import { PostListResolver } from './resolvers/post-list.resolver';
-import { PostResolver } from './resolvers/post.resolver';
+import {NgModule} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
+import {AuthenticatedActivator} from './activators/authenticated.activator';
+import {AboutMeComponent} from './components/about-me';
+import {
+  LoginComponent,
+  ManagementPanelComponent,
+  PostCreateComponent,
+  PostDetailsComponent,
+  PostEditComponent,
+  PostListComponent
+} from './components/blog';
+import {PostListResolver} from './resolvers/post-list.resolver';
+import {PostResolver} from './resolvers/post.resolver';
 
 const routes: Routes = [
   {
@@ -24,7 +26,6 @@ const routes: Routes = [
     },
   },
   {
-    //Create separate module for posts
     path: 'post-create',
     component: PostCreateComponent,
     canActivate: [AuthenticatedActivator]
@@ -64,4 +65,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

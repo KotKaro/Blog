@@ -1,0 +1,9 @@
+<div *ngFor="let skill of skills">
+  <span>{{skill.name}}</span>
+  <div class="d-flex align-items-center progress-wrapper">
+                        <span class="progress">
+                            <span class="progress-bar" [ngStyle]="{'width': skill.level + '%'}"></span>
+                        </span>
+    <span style="color: cornflowerblue; font-weight: 500;">{{skill.level}}%</span>
+  </div>
+</div>

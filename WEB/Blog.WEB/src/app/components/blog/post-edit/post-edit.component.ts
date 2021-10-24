@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute} from '@angular/router';
 import { Post } from 'src/app/models/post.model';
 import { BlogRouterService } from 'src/app/services/blog-router.service';
 import { PostService } from 'src/app/services/post.service';

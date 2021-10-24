@@ -1,11 +1,13 @@
-.ae-font {
+::ng-deep {
+  .ae-font {
     height: 30px !important;
-}
+  }
 
-.ae-picker-label {
+  .ae-picker-label {
     height: 30px !important;
-}
+  }
 
-.ae-font.ae-picker-label {
+  .ae-font.ae-picker-label {
     height: 30px !important;
+  }
 }
