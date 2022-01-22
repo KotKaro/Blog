@@ -4,9 +4,17 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  - group: DockerCredentails
+
 steps:
 - task: Docker@2
-  displayName: Build blog image
+  displayName: Login to docker
+  inputs:
+    command: login
+    arguments: -p $(DockerPass) -u $(DockerUser)
+- task: Docker@2
+  displayName: Build and push blogapi
   inputs:
     command: buildAndPush
     buildContext: .
