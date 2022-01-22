@@ -1,0 +1,14 @@
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: Docker@2
+  displayName: Build blog image
+  inputs:
+    command: buildAndPush
+    buildContext: .
+    Dockerfile: API/Blog.API/Dockerfile
+    repository: karooloo/blogapi
