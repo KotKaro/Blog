@@ -5,7 +5,7 @@ using Blog.Application.Commands.CreateComment;
 using Blog.Application.Commands.DeleteComment;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.Swagger.Annotations;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Blog.API.Controllers
 {
@@ -23,7 +23,7 @@ namespace Blog.API.Controllers
         /// <param name="command">Command details about comment to create</param>
         /// <returns>PostDTO objects</returns>
         [HttpPost]
-        [SwaggerResponse(HttpStatusCode.Created)]
+        [SwaggerResponse((int)HttpStatusCode.Created)]
         public async Task<IActionResult> CreateAsync(CreateComment command)
         {
             command.Id = Guid.NewGuid();
@@ -39,7 +39,7 @@ namespace Blog.API.Controllers
         /// <returns>PostDTO objects</returns>
         [HttpDelete]
         [Route("{id:guid}")]
-        [SwaggerResponse(HttpStatusCode.Accepted)]
+        [SwaggerResponse((int)HttpStatusCode.Accepted)]
         public async Task<IActionResult> DeleteAsync([FromRoute] Guid id)
         {
             await CheckTokenAsync();

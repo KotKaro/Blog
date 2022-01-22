@@ -3,7 +3,6 @@ using System.Net;
 using System.Threading.Tasks;
 using Blog.Application.Mappers.Exceptions;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
 
 namespace Blog.API
 {
@@ -36,7 +35,7 @@ namespace Blog.API
                 code = HttpStatusCode.Unauthorized;
             }
 
-            var result = JsonConvert.SerializeObject(new { error = ex.Message });
+            var result = System.Text.Json.JsonSerializer.Serialize(new { error = ex.Message });
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;
             return context.Response.WriteAsync(result);

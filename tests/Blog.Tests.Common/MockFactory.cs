@@ -1,7 +1,6 @@
 ﻿using System;
 using Blog.Application.Commands.CreateComment;
 using Blog.Application.Commands.CreatePost;
-using Blog.Application.Commands.DeletePost;
 using Blog.Application.Commands.UpdatePost;
 using Blog.Application.Queries.GetPostById;
 using Blog.Application.Queries.GetPosts;
@@ -104,14 +103,6 @@ namespace Blog.Tests.Common
         private static Creator CreateCreator(string creator = "John Smith")
         {
             return new Creator(creator);
-        }
-
-        public static DeleteCommentCommand CreateDeleteCommentCommand(Guid? id = null)
-        {
-            return new DeleteCommentCommand
-            {
-                Id = id ?? Guid.NewGuid()
-            };
         }
     }
 }

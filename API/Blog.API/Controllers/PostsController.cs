@@ -10,7 +10,7 @@ using Blog.Application.Queries.GetPosts;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.Swagger.Annotations;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Blog.API.Controllers
 {
@@ -28,7 +28,7 @@ namespace Blog.API.Controllers
         /// <param name="query">Query details, about page number and size</param>
         /// <returns>PostDTO objects</returns>
         [HttpGet]
-        [SwaggerResponse(HttpStatusCode.OK)]
+        [SwaggerResponse((int)HttpStatusCode.OK)]
         public async Task<PostDTO[]> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
             => await mediator.Send(new GetPostsQuery
             {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Blog.Domain.DataAccess;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -11,7 +10,6 @@ namespace Blog.API.Behaviors
     public class LoggingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
     {
         private readonly ILogger<TRequest> _logger;
-        private readonly IUnitOfWork _unitOfWork;
 
         public LoggingBehaviour(ILogger<TRequest> logger)
         {

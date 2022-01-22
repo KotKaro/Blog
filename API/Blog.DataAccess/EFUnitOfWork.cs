@@ -49,7 +49,7 @@ namespace Blog.DataAccess
                 .ToArray();
 
             var domainEvents = entityEntries
-                .SelectMany(x => x.Entity?.DomainEvents ?? Enumerable.Empty<IDomainEvent>())
+                .SelectMany(x => x.Entity.DomainEvents ?? Enumerable.Empty<IDomainEvent>())
                 .ToArray();
 
             foreach (var domainEvent in domainEvents)

@@ -10,6 +10,7 @@ namespace Blog.Domain.Models.Aggregates.Post
         public CreationDate CreationDate { get; private set; }
         public IList<Comment> Comments { get; private set; }
 
+        // ReSharper disable once UnusedMember.Local
         private Post() { }
 
         public Post(Guid id, Title title, Content content) : base(id)

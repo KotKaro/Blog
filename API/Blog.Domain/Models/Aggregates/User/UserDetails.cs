@@ -8,6 +8,7 @@ namespace Blog.Domain.Models.Aggregates.User
         public string Username { get; private set; }
         public string Password { get; private set; }
 
+        // ReSharper disable once UnusedMember.Local
         private UserDetails() { }
 
         public UserDetails(string username, string password)
