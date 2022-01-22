@@ -90,7 +90,7 @@ namespace Blog.DataAccess
             }
         }
 
-        public void RollbackTransaction()
+        private void RollbackTransaction()
         {
             try
             {

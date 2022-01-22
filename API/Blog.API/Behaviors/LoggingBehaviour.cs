@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Blog.API.Behaviors
 {
-    public class LoggingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    public class LoggingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
     {
         private readonly ILogger<TRequest> _logger;
         private readonly IUnitOfWork _unitOfWork;
@@ -20,19 +20,19 @@ namespace Blog.API.Behaviors
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            _logger.LogInformation("Starting request of type: {requestType}", typeof(TRequest).Name);
+            _logger.LogInformation("Starting request of type: {RequestType}", typeof(TRequest).Name);
             try
             {
                 return await next();
             }
             catch (Exception ex)
             {
-                _logger.LogError("Processing: {requestType} - throws exception: {message}", typeof(TRequest).Name, ex.Message);
+                _logger.LogError("Processing: {RequestType} - throws exception: {Message}", typeof(TRequest).Name, ex.Message);
                 throw;
             }
             finally
             {
-                _logger.LogInformation("Processing: {requestType} - ended", typeof(TRequest).Name);
+                _logger.LogInformation("Processing: {RequestType} - ended", typeof(TRequest).Name);
             }
         }
     }

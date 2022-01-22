@@ -3,6 +3,8 @@ using System.IO;
 using System.Reflection;
 using Autofac;
 using Blog.API.Infrastructure.AutofacModules;
+using Blog.DataAccess;
+using Blog.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -46,7 +48,7 @@ namespace Blog.API
             services.AddMvc(options => { options.EnableEndpointRouting = false; });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, BlogDbContext blogDbContext)
         {
             if (env.IsDevelopment())
             {
@@ -72,6 +74,8 @@ namespace Blog.API
                 FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "StaticFiles")),
                 RequestPath = "/.well-known/pki-validation"
             });
+            
+            blogDbContext.ApplyMigrations();
         }
 
         // ReSharper disable once UnusedMember.Global

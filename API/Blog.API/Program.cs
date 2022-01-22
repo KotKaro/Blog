@@ -12,7 +12,6 @@ namespace Blog.API
         {
             CreateHostBuilder(args)
                 .Build()
-                .ApplyMigrations()
                 .CreateUserFromConfiguration()
                 .Run();
         }

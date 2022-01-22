@@ -37,10 +37,12 @@ namespace Blog.IntegrationTests.Common
                 .ConfigureAppConfiguration(configuration =>
                 {
                     var connectionString = string.Format(TestConnectionString, mySqlContainer.Item2);
-                    var memoryConfigurationSource = new MemoryConfigurationSource();
-                    memoryConfigurationSource.InitialData = new[]
+                    var memoryConfigurationSource = new MemoryConfigurationSource
                     {
-                        new KeyValuePair<string, string>("ConnectionStrings:SqlDatabase", connectionString)
+                        InitialData = new[]
+                        {
+                            new KeyValuePair<string, string>("ConnectionStrings:SqlDatabase", connectionString)
+                        }
                     };
 
                     configuration.Add(memoryConfigurationSource);

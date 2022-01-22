@@ -2,7 +2,6 @@ using System.Linq;
 using Blog.Auth.Abstractions;
 using Blog.Domain.Models.Aggregates.User;
 using Blog.Infrastructure;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
@@ -10,24 +9,6 @@ namespace Blog.API.Common
 {
     public static class HostExtensions
     {
-        public static IHost ApplyMigrations(this IHost host)
-        {
-            if (host.Services.GetService(typeof(BlogDbContext)) is not BlogDbContext context)
-            {
-                return host;
-            }
-
-            var appliedMigrationsCount = context.Database.GetAppliedMigrations().Count();
-            var availableMigrationsCount = context.Database.GetMigrations().Count();
-
-            if (appliedMigrationsCount != availableMigrationsCount)
-            {
-                context.Database.Migrate();
-            }
-
-            return host;
-        }
-
         public static IHost CreateUserFromConfiguration(this IHost host)
         {
             if (host.Services.GetService(typeof(BlogDbContext)) is not BlogDbContext context)

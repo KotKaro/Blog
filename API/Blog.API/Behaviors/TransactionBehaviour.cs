@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Blog.API.Behaviors
 {
-    public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
 
