@@ -20,3 +20,7 @@ steps:
     buildContext: .
     Dockerfile: API/Blog.API/Dockerfile
     repository: karooloo/blogapi
+- task: Docker@2
+  displayName: Logout from docker
+  inputs:
+    command: logout
