@@ -4,24 +4,19 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-variables:
-  - group: DockerCredentails
-
 steps:
 - task: Docker@2
   displayName: Login to docker
   inputs:
     command: login
-    # repository: karooloo/blogapi
     containerRegistry: "Docker - KK"
-    # arguments: -p $(DockerPass) -u $(DockerUser)
 - task: Docker@2
   displayName: Build and push blogapi
   inputs:
     command: buildAndPush
     buildContext: .
     Dockerfile: API/Blog.API/Dockerfile
-    repository: karooloo/blogapi
+    # repository: karooloo/blogapi
 - task: Docker@2
   displayName: Logout from docker
   inputs:
