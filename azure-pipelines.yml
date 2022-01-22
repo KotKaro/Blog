@@ -12,8 +12,9 @@ steps:
   displayName: Login to docker
   inputs:
     command: login
-    repository: karooloo/blogapi
-    arguments: -p $(DockerPass) -u $(DockerUser)
+    # repository: karooloo/blogapi
+    containerRegistry: "Docker - KK"
+    # arguments: -p $(DockerPass) -u $(DockerUser)
 - task: Docker@2
   displayName: Build and push blogapi
   inputs:
