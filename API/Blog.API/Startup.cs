@@ -29,6 +29,7 @@ namespace Blog.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddResponseCompression();
             services.AddControllers();
             services.AddCors(o => o.AddPolicy(CorsPolicyName, builder =>
             {
@@ -50,6 +51,7 @@ namespace Blog.API
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, BlogDbContext blogDbContext)
         {
+            app.UseResponseCompression();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage()
