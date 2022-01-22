@@ -18,40 +18,34 @@ namespace Blog.API
     public class Startup
     {
         private const string CorsPolicyName = "MasAPpCorsPolicy";
+        private readonly IConfiguration _configuration;
 
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddResponseCompression();
             services.AddControllers();
-            services.AddCors(o => o.AddPolicy(CorsPolicyName, builder =>
-            {
-                builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
-            }));
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Blog API", Version = "v1" });
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
-            });
-
-            services.AddMvc(options => { options.EnableEndpointRouting = false; });
+            services.AddResponseCompression()
+                .AddCors(o => o.AddPolicy(CorsPolicyName, builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                })).AddSwaggerGen(c =>
+                {
+                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Blog API", Version = "v1" });
+                    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                    c.IncludeXmlComments(xmlPath);
+                }).AddMvc(options => { options.EnableEndpointRouting = false; });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, BlogDbContext blogDbContext)
         {
-            app.UseResponseCompression();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage()
@@ -63,20 +57,20 @@ namespace Blog.API
                     });
             }
 
-            app.UseHttpsRedirection()
+            app.UseResponseCompression()
+                .UseHttpsRedirection()
                 .UseCors(CorsPolicyName)
                 .UseRouting()
                 .UseMiddleware<ErrorHandlingMiddleware>()
                 .UseAuthorization()
                 .UseEndpoints(endpoints => endpoints.MapControllers())
-                .UseMvc();
+                .UseMvc()
+                .UseStaticFiles(new StaticFileOptions
+                {
+                    FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "StaticFiles")),
+                    RequestPath = "/.well-known/pki-validation"
+                });
 
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "StaticFiles")),
-                RequestPath = "/.well-known/pki-validation"
-            });
-            
             blogDbContext.ApplyMigrations();
         }
 
@@ -84,7 +78,7 @@ namespace Blog.API
         public void ConfigureContainer(ContainerBuilder containerBuilder)
         {
             containerBuilder.RegisterModule(new MediatorModule());
-            containerBuilder.RegisterModule(new ApplicationModule(Configuration));
+            containerBuilder.RegisterModule(new ApplicationModule(_configuration));
         }
     }
 }
