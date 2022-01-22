@@ -55,6 +55,11 @@ const routes: Routes = [
     component: LoginComponent
   },
   {
+    path: '/',
+    redirectTo: 'blog',
+    pathMatch: 'full'
+  },
+  {
     path: '',
     redirectTo: 'blog',
     pathMatch: 'full'
