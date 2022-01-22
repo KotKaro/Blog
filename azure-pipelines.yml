@@ -16,7 +16,7 @@ steps:
     command: buildAndPush
     buildContext: .
     Dockerfile: API/Blog.API/Dockerfile
-    # repository: karooloo/blogapi
+    repository: blogapi
 - task: Docker@2
   displayName: Logout from docker
   inputs:
