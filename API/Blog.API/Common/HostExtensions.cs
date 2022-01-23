@@ -3,6 +3,7 @@ using Blog.Auth.Abstractions;
 using Blog.Domain.Models.Aggregates.User;
 using Blog.Infrastructure;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace Blog.API.Common
@@ -11,12 +12,12 @@ namespace Blog.API.Common
     {
         public static IHost CreateUserFromConfiguration(this IHost host)
         {
-            if (host.Services.GetService(typeof(BlogDbContext)) is not BlogDbContext context)
+            if (host.Services.GetService<BlogDbContext>() is not BlogDbContext context)
             {
                 return host;
             }
 
-            if (host.Services.GetService(typeof(IPasswordHasher)) is not IPasswordHasher passwordHasher)
+            if (host.Services.GetService<IPasswordHasher>() is not IPasswordHasher passwordHasher)
             {
                 return host;
             }
