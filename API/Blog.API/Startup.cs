@@ -2,9 +2,11 @@ using System;
 using System.IO;
 using System.Reflection;
 using Autofac;
-using Blog.API.Infrastructure.AutofacModules;
+using Blog.Application.Bootstrap;
+using Blog.Auth.Bootstrap;
 using Blog.DataAccess;
 using Blog.Infrastructure;
+using Blog.Infrastructure.Bootstrap;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +32,7 @@ namespace Blog.API
         {
             services.AddControllers();
             services.AddResponseCompression()
+                .AddLogging()
                 .AddCors(o => o.AddPolicy(CorsPolicyName, builder =>
                 {
                     builder.AllowAnyOrigin()
@@ -74,10 +77,14 @@ namespace Blog.API
             blogDbContext.ApplyMigrations();
         }
 
-        // ReSharper disable once UnusedMember.Global
         public void ConfigureContainer(ContainerBuilder containerBuilder)
         {
-            containerBuilder.RegisterModule(new ApiModule(_configuration));
+            containerBuilder.Register(_ => _configuration)
+                .AsImplementedInterfaces();
+            
+            containerBuilder.RegisterModule(new AuthModule());
+            containerBuilder.RegisterModule(new InfrastructureModule());
+            containerBuilder.RegisterModule(new ApplicationModule());
         }
     }
 }

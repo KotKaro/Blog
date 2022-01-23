@@ -1,11 +1,10 @@
 ﻿using Autofac;
-using Blog.Auth;
 using Blog.Auth.Abstractions;
 using Blog.Auth.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
-namespace Blog.API.Infrastructure.AutofacModules
+namespace Blog.Auth.Bootstrap
 {
     public class AuthModule : Module
     {
