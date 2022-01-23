@@ -23,9 +23,10 @@ namespace Blog.API.Controllers
 
         private string GetTokenHeaderValue()
         {
-            var val = HttpContext?.Request?.Headers["jwt-token"];
+            var val = HttpContext.Request.Headers["jwt-token"];
+            var token = val.FirstOrDefault();
 
-            return val.HasValue ? val.Value.FirstOrDefault() : "no-token";
+            return !string.IsNullOrWhiteSpace(token) ? token : "no-token";
         }
     }
 }

@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Blog.Domain.Exceptions;
 
 namespace Blog.Domain.Models.Aggregates.Post
 {
@@ -11,7 +11,7 @@ namespace Blog.Domain.Models.Aggregates.Post
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(value));
+                throw new InvalidValueException("Value cannot be null or whitespace.", nameof(value));
             }
 
             Value = value;

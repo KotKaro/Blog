@@ -11,4 +11,11 @@ namespace Blog.Domain.Exceptions
         {
         }
     }
+
+    public class InvalidValueException : ArgumentException
+    {
+        public InvalidValueException(string message, string valueName) : base(message, valueName)
+        {
+        }
+    }
 }

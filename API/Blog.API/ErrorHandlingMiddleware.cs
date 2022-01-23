@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using Blog.Application.Mappers.Exceptions;
+using Blog.Domain.Exceptions;
 using Microsoft.AspNetCore.Http;
 
 namespace Blog.API
@@ -33,6 +34,16 @@ namespace Blog.API
             if (ex.GetType() == typeof(LoginException) || ex.GetType() == typeof(TokenInvalidException))
             {
                 code = HttpStatusCode.Unauthorized;
+            }
+            
+            if (ex.GetType() == typeof(RecordNotFoundException))
+            {
+                code = HttpStatusCode.NotFound;
+            }
+            
+            if (ex.GetType() == typeof(InvalidValueException))
+            {
+                code = HttpStatusCode.BadRequest;
             }
 
             var result = System.Text.Json.JsonSerializer.Serialize(new { error = ex.Message });

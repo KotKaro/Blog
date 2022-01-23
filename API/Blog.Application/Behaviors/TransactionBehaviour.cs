@@ -17,6 +17,11 @@ namespace Blog.Application.Behaviors
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
+            if (request is not IRequest)
+            {
+                return await next();
+            }
+            
             if (_unitOfWork.HasActiveTransaction)
             {
                 return await next();
