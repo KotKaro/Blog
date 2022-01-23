@@ -10,12 +10,12 @@ WORKDIR /src
 
 COPY ["API/Blog.API/Blog.API.csproj", "API/Blog.API/"]
 COPY ["API/Blog.API/StaticFiles", "API/Blog.API/StaticFiles/"]
-COPY ["API/Blog.Auth.Abstractions/Blog.Auth.Abstractions.csproj", "API/Blog.Auth.Abstractions/"]
 COPY ["API/Blog.Application/Blog.Application.csproj", "API/Blog.Application/"]
 COPY ["API/Blog.Domain/Blog.Domain.csproj", "API/Blog.Domain/"]
 COPY ["API/Blog.Infrastructure/Blog.Infrastructure.csproj", "API/Blog.Infrastructure/"]
-COPY ["API/Blog.DataAccess/Blog.DataAccess.csproj", "API/Blog.DataAccess/"]
-COPY ["API/Blog.Auth/Blog.Auth.csproj", "API/Blog.Auth/"]
+COPY ["API/Blog.Infrastructure.DataAccess/Blog.Infrastructure.DataAccess.csproj", "API/Blog.Infrastructure.DataAccess/"]
+COPY ["API/Blog.Infrastructure.Auth/Blog.Infrastructure.Auth.csproj", "API/Blog.Infrastructure.Auth/"]
+COPY ["API/Blog.Infrastructure.Auth.Abstractions/Blog.Infrastructure.Auth.Abstractions.csproj", "API/Blog.Infrastructure.Auth.Abstractions/"]
 RUN dotnet restore "API/Blog.API/Blog.API.csproj" --no-cache
 COPY . .
 WORKDIR "/src/API/Blog.API"
