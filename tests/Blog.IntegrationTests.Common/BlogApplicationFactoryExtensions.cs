@@ -5,6 +5,7 @@ using System.Net.Http.Json;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Blog.Application.Commands.CreateComment;
 using Blog.Application.Commands.CreatePost;
 using Blog.Application.Commands.UpdatePost;
 using Blog.Application.DTO;
@@ -38,8 +39,9 @@ public static class BlogApplicationFactoryExtensions
 
     public static async Task<PostDTO> CreatePost(this BlogApplicationFactory factory, CreatePost createPost)
     {
-        return await (await factory.Server.CreateClient().PostAsync("/posts",
-                new StringContent(System.Text.Json.JsonSerializer.Serialize(createPost)))).Content
+        var content = CreateStringContentWithToken(factory, createPost);
+        return await (await factory.Server.CreateClient().PostAsync("/posts", content))
+            .Content
             .ReadFromJsonAsync<PostDTO>();
     }
 
@@ -54,27 +56,16 @@ public static class BlogApplicationFactoryExtensions
     public static async Task<HttpResponseMessage> UpdatePost(this BlogApplicationFactory factory,
         UpdatePostCommand updatePost)
     {
-        var content = new StringContent(
-            System.Text.Json.JsonSerializer.Serialize(updatePost),
-            Encoding.UTF8,
-            "application/json");
-
-        foreach (var (key, value) in factory.GetHeadersWithToken())
-        {
-            content.Headers.Add(key, value.ToString());
-        }
-
+        var content = CreateStringContentWithToken(factory, updatePost);
         return await factory.Server.CreateClient().PatchAsync("/posts", content);
     }
-
-    private static Dictionary<string, StringValues> GetHeadersWithToken(this BlogApplicationFactory factory)
+    
+    public static async Task<HttpResponseMessage> CreateComment(
+        this BlogApplicationFactory factory,
+        CreateComment createComment)
     {
-        var jwtService = (IJwtService)factory.Services.GetService(typeof(IJwtService));
-        var token = jwtService!
-            .GenerateToken(new Claim("username", "John"))
-            .Value;
-
-        return new Dictionary<string, StringValues> { { "jwt-token", token } };
+        var content = CreateStringContentWithToken(factory, createComment);
+        return await factory.Server.CreateClient().PostAsync("/comments", content);
     }
     
     public static async Task<HttpResponseMessage> DeletePost(this BlogApplicationFactory factory, Guid id)
@@ -87,5 +78,48 @@ public static class BlogApplicationFactoryExtensions
         }
 
         return await request.SendAsync(HttpMethod.Delete.Method);
+    }
+    
+    public static async Task<HttpResponseMessage> DeleteComment(this BlogApplicationFactory factory, Guid id)
+    {
+        var request = factory.Server.CreateRequest($"/comments/{id}");
+
+        foreach (var (key, value) in factory.GetHeadersWithToken())
+        {
+            request.AddHeader(key, value.ToString());
+        }
+
+        return await request.SendAsync(HttpMethod.Delete.Method);
+    }
+    
+    public static async Task<HttpResponseMessage> DeleteCommentWithoutHeaders(this BlogApplicationFactory factory, Guid id)
+    {
+        var request = factory.Server.CreateRequest($"/comments/{id}");
+        return await request.SendAsync(HttpMethod.Delete.Method);
+    }
+    
+    private static StringContent CreateStringContentWithToken<T>(BlogApplicationFactory factory, T toSerialize)
+    {
+        var content = new StringContent(
+            System.Text.Json.JsonSerializer.Serialize(toSerialize),
+            Encoding.UTF8,
+            "application/json");
+
+        foreach (var (key, value) in factory.GetHeadersWithToken())
+        {
+            content.Headers.Add(key, value.ToString());
+        }
+
+        return content;
+    }
+
+    private static Dictionary<string, StringValues> GetHeadersWithToken(this BlogApplicationFactory factory)
+    {
+        var jwtService = (IJwtService)factory.Services.GetService(typeof(IJwtService));
+        var token = jwtService!
+            .GenerateToken(new Claim("username", "John"))
+            .Value;
+
+        return new Dictionary<string, StringValues> { { "jwt-token", token } };
     }
 }

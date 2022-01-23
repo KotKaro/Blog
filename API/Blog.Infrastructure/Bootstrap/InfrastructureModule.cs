@@ -1,6 +1,4 @@
 using System;
-using System.Data;
-using System.Data.Common;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Blog.DataAccess;
@@ -11,7 +9,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MySqlConnector;
 
 namespace Blog.Infrastructure.Bootstrap;
 
@@ -20,11 +17,6 @@ public class InfrastructureModule : Module
     protected override void Load(ContainerBuilder builder)
     {
         base.Load(builder);
-        
-        builder.Register(c => new MySqlConnection(c.Resolve<IConfiguration>().GetConnectionString("SqlDatabase")))
-            .As<IDbConnection>()
-            .As<DbConnection>()
-            .InstancePerLifetimeScope();
         
         builder.RegisterType<PostRepository>()
             .As<IPostRepository>()
@@ -57,7 +49,7 @@ public class InfrastructureModule : Module
         serviceCollection.AddDbContextPool<TDbContext>((provider, opts) =>
         {
             opts.UseMySql(
-                provider.GetService<DbConnection>()!,
+                provider.GetService<IConfiguration>().GetConnectionString("SqlDatabase"),
                 new MySqlServerVersion(new Version(8, 0, 26)),
                 sqlOptions =>
                 {

@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Blog.Application.Commands.CreatePost;
+using Blog.Domain.Exceptions;
 using Blog.Domain.Models.Aggregates.Post;
 using Blog.Domain.Repositories;
 using Moq;
@@ -30,26 +31,26 @@ namespace Blog.Application.UnitTests.Commands.CreatePost
         }
 
         [Fact]
-        public async Task When_EmptyTitleProvided_Expect_ArgumentExceptionThrown()
+        public async Task When_EmptyTitleProvided_Expect_InvalidValueExceptionThrown()
         {
             // Arrange
             var createPostCommandHandler = new CreatePostHandler(_postRepositoryMock.Object);
 
             //Act + Assert
-            await Assert.ThrowsAsync<ArgumentException>(async () =>
+            await Assert.ThrowsAsync<InvalidValueException>(async () =>
             {
                 await createPostCommandHandler.Handle(MockFactory.CreateCreatePostCommand(""), CancellationToken.None);
             });
         }
 
         [Fact]
-        public async Task When_EmptyContentProvided_Expect_ArgumentExceptionThrown()
+        public async Task When_EmptyContentProvided_Expect_InvalidValueExceptionThrown()
         {
             // Arrange
             var createPostCommandHandler = new CreatePostHandler(_postRepositoryMock.Object);
 
             //Act + Assert
-            await Assert.ThrowsAsync<ArgumentException>(async () =>
+            await Assert.ThrowsAsync<InvalidValueException>(async () =>
             {
                 await createPostCommandHandler.Handle(MockFactory.CreateCreatePostCommand(content: ""), CancellationToken.None);
             });
