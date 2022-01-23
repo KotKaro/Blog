@@ -1,4 +1,4 @@
-using Blog.Application.DTO;
+using Blog.Domain.Repositories.PostReadRepository;
 using Blog.Tests.Common;
 using FluentAssertions;
 using Xunit;

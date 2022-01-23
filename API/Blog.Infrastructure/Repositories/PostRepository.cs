@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Blog.DataAccess;
 using Blog.Domain.DataAccess;
 using Blog.Domain.Models.Aggregates.Post;
@@ -19,16 +17,6 @@ namespace Blog.Infrastructure.Repositories
         {
             return DbContext.Set<Post>()
                 .Include(x => x.Comments);
-        }
-
-        public async Task<IEnumerable<Post>> GetAllAsync(int pageNumber = 1, int pageSize = 10)
-        {
-            return await GetQueryWithIncludes()
-                .OrderByDescending(x => x.CreationDate.Value)
-                .Skip(pageNumber * pageSize - pageSize)
-                .Take(pageSize)
-                .AsNoTracking()
-                .ToArrayAsync();
         }
     }
 }

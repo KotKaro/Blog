@@ -2,10 +2,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Blog.Application.DTO;
 using Blog.Domain.Exceptions;
 using Blog.Domain.Models.Aggregates.Post;
 using Blog.Domain.Repositories;
+using Blog.Domain.Repositories.PostReadRepository;
 using MediatR;
 
 namespace Blog.Application.Queries.GetPostById

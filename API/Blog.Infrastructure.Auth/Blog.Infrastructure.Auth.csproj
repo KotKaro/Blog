@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>Blog.Auth</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Blog.Auth.Abstractions\Blog.Auth.Abstractions.csproj" />
+    <ProjectReference Include="..\Blog.Infrastructure.Auth.Abstractions\Blog.Infrastructure.Auth.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

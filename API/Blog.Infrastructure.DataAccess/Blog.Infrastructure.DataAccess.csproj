@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>Blog.DataAccess</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

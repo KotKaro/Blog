@@ -4,6 +4,7 @@ using Autofac.Extensions.DependencyInjection;
 using Blog.DataAccess;
 using Blog.Domain.DataAccess;
 using Blog.Domain.Repositories;
+using Blog.Domain.Repositories.PostReadRepository;
 using Blog.Infrastructure.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,10 @@ public class InfrastructureModule : Module
         
         builder.RegisterType<PostRepository>()
             .As<IPostRepository>()
+            .InstancePerLifetimeScope();
+        
+        builder.RegisterType<PostReadRepository>()
+            .As<IPostReadRepository>()
             .InstancePerLifetimeScope();
 
         builder.RegisterType<UserRepository>()

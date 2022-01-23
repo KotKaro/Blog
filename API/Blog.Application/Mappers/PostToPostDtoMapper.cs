@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Blog.Application.DTO;
 using Blog.Domain.Models.Aggregates.Post;
+using Blog.Domain.Repositories.PostReadRepository;
 
 namespace Blog.Application.Mappers
 {

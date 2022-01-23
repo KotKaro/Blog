@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 using Blog.Application.Commands.CreateComment;
 using Blog.Application.Commands.CreatePost;
 using Blog.Application.Commands.UpdatePost;
-using Blog.Application.DTO;
 using Blog.Auth.Abstractions;
+using Blog.Domain.Repositories.PostReadRepository;
 using Microsoft.Extensions.Primitives;
 
 namespace Blog.IntegrationTests.Common;

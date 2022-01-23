@@ -1,5 +1,5 @@
 ﻿using System;
-using Blog.Application.DTO;
+using Blog.Domain.Repositories.PostReadRepository;
 using MediatR;
 
 namespace Blog.Application.Queries.GetPostById

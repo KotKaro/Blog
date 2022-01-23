@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Blog.Application.DTO
+namespace Blog.Domain.Repositories.PostReadRepository
 {
     public class CommentDTO
     {

@@ -1,11 +1,10 @@
-using System;
 using System.Linq;
 using System.Threading;
 using Blog.Application.Queries.GetPosts;
 using Moq;
 using System.Threading.Tasks;
-using Blog.Domain.Repositories;
-using Blog.Tests.Common;
+using AutoFixture;
+using Blog.Domain.Repositories.PostReadRepository;
 using FluentAssertions;
 using Xunit;
 using MockFactory = Blog.Tests.Common.MockFactory;
@@ -14,41 +13,24 @@ namespace Blog.Application.UnitTests.Queries.GetPosts
 {
     public class GetPostsHandlerTests
     {
-        private readonly Mock<IPostRepository> _postRepositoryMock;
+        private readonly Mock<IPostReadRepository> _postRepositoryMock;
+        private readonly Fixture _fixture;
 
         public GetPostsHandlerTests()
         {
-            _postRepositoryMock = new Mock<IPostRepository>();
+            _postRepositoryMock = new Mock<IPostReadRepository>();
+            _fixture = new Fixture();
         }
 
-        [Fact]
-        public void When_GetPostQueryHandlerConstructedWithoutPostRepository_Expect_ArgumentNullExceptionThrown()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                // ReSharper disable once ObjectCreationAsStatement
-                new GetPostsQueryHandler(null, Mapper.GetInstance());
-            });
-        }
-
-        [Fact]
-        public void When_GetPostQueryHandlerConstructedWithoutMapper_Expect_ArgumentNullExceptionThrown()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                // ReSharper disable once ObjectCreationAsStatement
-                new GetPostsQueryHandler(_postRepositoryMock.Object, null);
-            });
-        }
 
         [Fact]
         public async Task When_HandledAndTenElementsFromFirstPageRequestedAndTenElementExists_Expect_TenElementsReturned()
         {
             //Arrange
             _postRepositoryMock.Setup(x => x.GetAllAsync(1, 10))
-                .Returns(Task.FromResult(Enumerable.Range(0, 10).Select(_ => MockFactory.CreatePost())));
+                .ReturnsAsync(_fixture.CreateMany<PostDTO>(10).ToArray);
 
-            var sut = new GetPostsQueryHandler(_postRepositoryMock.Object, Mapper.GetInstance());
+            var sut = new GetPostsQueryHandler(_postRepositoryMock.Object);
 
             //Act
             var result = await sut.Handle(MockFactory.CreateGetPostsQuery(), CancellationToken.None);

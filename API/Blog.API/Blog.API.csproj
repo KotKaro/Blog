@@ -28,7 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Blog.Application\Blog.Application.csproj" />
-    <ProjectReference Include="..\Blog.Auth\Blog.Auth.csproj" />
+    <ProjectReference Include="..\Blog.Infrastructure.Auth\Blog.Infrastructure.Auth.csproj" />
     <ProjectReference Include="..\Blog.Infrastructure\Blog.Infrastructure.csproj" />
   </ItemGroup>
 
