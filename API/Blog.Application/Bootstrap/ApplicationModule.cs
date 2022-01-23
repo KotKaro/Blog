@@ -1,12 +1,13 @@
 ﻿using Autofac;
-using Blog.API.Behaviors;
+using AutoMapper.Contrib.Autofac.DependencyInjection;
+using Blog.Application.Behaviors;
+using Blog.Application.Mappers;
 using Blog.Application.Queries.GetPosts;
 using MediatR.Extensions.Autofac.DependencyInjection;
-using Module = Autofac.Module;
 
-namespace Blog.API.Infrastructure.AutofacModules
+namespace Blog.Application.Bootstrap
 {
-    public class MediatorModule : Module
+    public class ApplicationModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
@@ -17,6 +18,8 @@ namespace Blog.API.Infrastructure.AutofacModules
                 .AsImplementedInterfaces();
             builder.RegisterGeneric(typeof(LoggingBehaviour<,>))
                 .AsImplementedInterfaces();
+            
+            builder.RegisterAutoMapper(typeof(PostToPostDtoMapper).Assembly);
         }
     }
 }

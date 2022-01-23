@@ -77,8 +77,7 @@ namespace Blog.API
         // ReSharper disable once UnusedMember.Global
         public void ConfigureContainer(ContainerBuilder containerBuilder)
         {
-            containerBuilder.RegisterModule(new MediatorModule());
-            containerBuilder.RegisterModule(new ApplicationModule(_configuration));
+            containerBuilder.RegisterModule(new ApiModule(_configuration));
         }
     }
 }

@@ -4,8 +4,7 @@ using System.Threading.Tasks;
 using Blog.Domain.DataAccess;
 using MediatR;
 
-
-namespace Blog.API.Behaviors
+namespace Blog.Application.Behaviors
 {
     public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
     {
