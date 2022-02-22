@@ -31,8 +31,6 @@ namespace Blog.IntegrationTests.Controllers
             _authController = new AuthController(
                 factory.Services.GetService(typeof(IMediator)) as IMediator
             );
-            
-            _blogDbContext!.Set<User>().RemoveRange(_blogDbContext.Set<User>());
         }
 
         [Fact]

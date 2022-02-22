@@ -2,8 +2,6 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Blog.Domain.Models.Aggregates.Post;
-using Blog.Infrastructure;
 using Blog.IntegrationTests.Common;
 using FluentAssertions;
 using Xunit;
@@ -19,9 +17,6 @@ namespace Blog.IntegrationTests.Controllers
         public CommentsControllerTests(BlogApplicationFactory factory)
         {
             _factory = factory;
-            var blogDbContext = (BlogDbContext)factory.Services.GetService(typeof(BlogDbContext));
-            blogDbContext!.Set<Comment>().RemoveRange(blogDbContext.Set<Comment>());
-            blogDbContext.Set<Post>().RemoveRange(blogDbContext.Set<Post>());
         }
 
         [Fact]

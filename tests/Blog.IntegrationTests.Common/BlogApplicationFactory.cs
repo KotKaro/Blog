@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Autofac.Extensions.DependencyInjection;
 using Blog.API;
+using Blog.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration.Memory;
@@ -47,6 +48,22 @@ namespace Blog.IntegrationTests.Common
 
                     configuration.Add(memoryConfigurationSource);
                 });
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            try
+            {
+                var blogDbContext = (BlogDbContext)Services.GetService(typeof(BlogDbContext));
+                blogDbContext!.Posts.RemoveRange(blogDbContext.Posts);
+                blogDbContext.SaveChanges();
+            }
+            catch
+            {
+                // Intentionally empty
+            }
+            
+            base.Dispose(disposing);
         }
     }
 }

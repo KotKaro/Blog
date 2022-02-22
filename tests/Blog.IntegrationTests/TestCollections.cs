@@ -1,11 +1,9 @@
 using Blog.IntegrationTests.Common;
 using Xunit;
 
-[assembly: CollectionBehavior(DisableTestParallelization = true)]
-
 namespace Blog.IntegrationTests
 {
-    [CollectionDefinition(nameof(BlogTestCollection), DisableParallelization = true)]
+    [CollectionDefinition(nameof(BlogTestCollection))]
     public class BlogTestCollection : ICollectionFixture<BlogApplicationFactory>
     {
         
