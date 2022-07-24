@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {ToastrService} from 'ngx-toastr';
 import {AuthService} from 'src/app/services/auth.service';
 import {BlogRouterService} from 'src/app/services/blog-router.service';
@@ -16,13 +16,13 @@ export class LoginComponent {
   mouseoverLogin: boolean;
   loginInvalid = false;
 
-  loginForm: FormGroup;
+  loginForm: UntypedFormGroup;
 
   constructor(
     private blogRouter: BlogRouterService,
     private authService: AuthService,
     private toastrService: ToastrService,
-    private formBuilder: FormBuilder) {
+    private formBuilder: UntypedFormBuilder) {
     this.loginForm = formBuilder.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required]]

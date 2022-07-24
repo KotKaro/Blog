@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Comment } from 'src/app/models/comment.model';
 import { CommentService } from 'src/app/services/comment.service';
 
@@ -12,13 +12,13 @@ export class CommentCreateComponent {
   @Input() postId: string;
   @Output() commentCreatedEventEmitter = new EventEmitter<Comment>();
 
-  commentCreateForm: FormGroup;
+  commentCreateForm: UntypedFormGroup;
   comment: Comment = { id: '', content: '', creator: '', postId: '' };
 
-  constructor(fb: FormBuilder, private commentService: CommentService) {
+  constructor(fb: UntypedFormBuilder, private commentService: CommentService) {
     this.commentCreateForm = fb.group({
-      creator: new FormControl(this.comment?.creator, [Validators.required]),
-      content: new FormControl(this.comment?.content, [Validators.required])
+      creator: new UntypedFormControl(this.comment?.creator, [Validators.required]),
+      content: new UntypedFormControl(this.comment?.content, [Validators.required])
     });
   }
 

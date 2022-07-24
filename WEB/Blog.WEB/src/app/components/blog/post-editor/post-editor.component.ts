@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Post } from 'src/app/models/post.model';
 
@@ -9,19 +9,19 @@ import { Post } from 'src/app/models/post.model';
   styleUrls: ['./post-editor.component.scss']
 })
 export class PostEditorComponent {
-  private _post: Post;
+  private post: Post;
 
   @Output() postChange = new EventEmitter<Post>();
-  postForm: FormGroup;
+  postForm: UntypedFormGroup;
 
   @Input()
-  set post(val: Post) {
-    this._post = val;
-    this.postChange.emit(this._post);
+  set Post(val: Post) {
+    this.post = val;
+    this.postChange.emit(this.post);
 
-    this.postForm.get('title').setValue(this._post?.title);
-    this.postForm.get('content').setValue(this._post?.content);
-    this.postChange.emit(this._post);
+    this.postForm.get('title').setValue(this.post?.title);
+    this.postForm.get('content').setValue(this.post?.content);
+    this.postChange.emit(this.post);
   }
 
   editorConfig: AngularEditorConfig = {
@@ -54,28 +54,28 @@ export class PostEditorComponent {
       ['fontSize']
     ]
   };
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: UntypedFormBuilder) {
     this.postForm = fb.group({
-      title: new FormControl(this.post?.title, [Validators.required]),
-      content: new FormControl(this.post?.content, [Validators.required])
+      title: new UntypedFormControl(this.post?.title, [Validators.required]),
+      content: new UntypedFormControl(this.post?.content, [Validators.required])
     });
 
     this.postForm.get('title').valueChanges.subscribe(title => {
-      if (!this._post) {
-        this._post = {} as Post;
+      if (!this.post) {
+        this.post = {} as Post;
       }
 
-      this._post.title = title;
-      this.postChange.emit(this._post);
+      this.post.title = title;
+      this.postChange.emit(this.post);
     });
 
     this.postForm.get('content').valueChanges.subscribe(content => {
-      if (!this._post) {
-        this._post = {} as Post;
+      if (!this.post) {
+        this.post = {} as Post;
       }
 
-      this._post.content = content;
-      this.postChange.emit(this._post);
+      this.post.content = content;
+      this.postChange.emit(this.post);
     });
   }
 }

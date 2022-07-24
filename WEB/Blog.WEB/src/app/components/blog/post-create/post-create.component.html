@@ -1,6 +1,6 @@
 <h2 class="header-center">Create post</h2>
 <hr />
-<app-post-editor [(post)]="post"></app-post-editor>
+<app-post-editor [Post]="post"></app-post-editor>
 
 <button type="submit" class="btn btn-info" [disabled]="!isPostValid()" (click)="createPost()">
     Create
