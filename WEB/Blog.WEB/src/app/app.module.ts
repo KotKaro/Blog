@@ -51,6 +51,7 @@ import {
   AboutMeSkillsListComponent,
   AboutMeComponent
 } from './components/about-me';
+import {AboutMeCvGeneratorComponent} from './components/about-me/about-me-cv-generator/about-me-cv-generator.component';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import {
     AboutMeSkillsListComponent,
     AboutMeExperienceComponent,
     AboutMeProfilesComponent,
+    AboutMeCvGeneratorComponent,
     LoadingComponent,
     CommentCreateComponent,
     CommentListComponent
