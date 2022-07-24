@@ -61,13 +61,32 @@
                                     "maximumError": "10kb"
                                 }
                             ]
-                        }
+                        },
+                      "development": {
+                        "aot": false,
+                        "budgets": [
+                          {
+                            "type": "anyComponentStyle",
+                            "maximumWarning": "6kb"
+                          }
+                        ],
+                        "optimization": false,
+                        "sourceMap": {
+                          "scripts": true,
+                          "styles": true,
+                          "vendor": true
+                        },
+                        "extractLicenses": false,
+                        "namedChunks": true,
+                        "vendorChunk": true,
+                        "buildOptimizer": false
+                      }
                     }
                 },
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "blog-spa:build",
+                        "browserTarget": "blog-spa:build:development",
                         "proxyConfig": "src/proxy-local.conf.json"
                     },
                     "configurations": {
