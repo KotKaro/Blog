@@ -17,7 +17,7 @@ export class AboutMeEducationComponent {
         description: 'I choose math-geographical-english class. I think that was the best time of my life.'
       },
       {
-        years: '2016 - Present',
+        years: '2016 - 2022',
         grade: 'Bachelor of computer science',
         schoolName: 'POLISH-JAPAN ACADEMY OF COMPUTER SCIENCE',
         schoolCity: 'Warsaw',
