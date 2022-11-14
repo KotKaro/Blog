@@ -22,7 +22,7 @@ public class TransactionBehaviourTests
         var sut = new TransactionBehaviour<GetPostsQuery,PostDTO[]>(uowMock.Object);
         
         // Act
-        await sut.Handle(new GetPostsQuery(), CancellationToken.None, () => Task.FromResult(Array.Empty<PostDTO>()));
+        await sut.Handle(new GetPostsQuery(), () => Task.FromResult(Array.Empty<PostDTO>()), CancellationToken.None);
         
         // Assert
         uowMock.Verify(x => x.BeginTransactionAsync(), Times.Never);
@@ -36,7 +36,7 @@ public class TransactionBehaviourTests
         var sut = new TransactionBehaviour<CreatePost, Unit>(uowMock.Object);
         
         // Act
-        await sut.Handle(new CreatePost(), CancellationToken.None, () => Unit.Task);
+        await sut.Handle(new CreatePost(), () => Unit.Task, CancellationToken.None);
         
         // Assert
         uowMock.Verify(x => x.BeginTransactionAsync(), Times.Once);
@@ -50,7 +50,7 @@ public class TransactionBehaviourTests
         var sut = new TransactionBehaviour<CreatePost, Unit>(uowMock.Object);
         
         // Act
-        await sut.Handle(new CreatePost(), CancellationToken.None, () => Unit.Task);
+        await sut.Handle(new CreatePost(), () => Unit.Task, CancellationToken.None);
         
         // Assert
         uowMock.Verify(x => x.CommitTransactionAsync(It.IsAny<ITransaction>()), Times.Once);
@@ -65,7 +65,7 @@ public class TransactionBehaviourTests
         var sut = new TransactionBehaviour<CreatePost, Unit>(uowMock.Object);
         
         // Act
-        await sut.Handle(new CreatePost(), CancellationToken.None, () => Unit.Task);
+        await sut.Handle(new CreatePost(), () => Unit.Task,  CancellationToken.None);
         
         // Assert
         uowMock.Verify(x => x.BeginTransactionAsync(), Times.Never);
@@ -80,7 +80,7 @@ public class TransactionBehaviourTests
         var sut = new TransactionBehaviour<CreatePost, Unit>(uowMock.Object);
         
         // Act
-        await sut.Handle(new CreatePost(), CancellationToken.None, () => Unit.Task);
+        await sut.Handle(new CreatePost(), () => Unit.Task, CancellationToken.None);
         
         // Assert
         uowMock.Verify(x => x.CommitTransactionAsync(It.IsAny<ITransaction>()), Times.Never);
